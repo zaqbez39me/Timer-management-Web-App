@@ -1,0 +1,9 @@
+fastapi~=0.95.0
+fastapi-sqlalchemy
+uvicorn
+psycopg2
+starlette~=0.26.1
+requests
+httpx
+SQLAlchemy~=2.0.7
+pydantic~=1.10.7
