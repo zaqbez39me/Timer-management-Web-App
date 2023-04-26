@@ -18,7 +18,6 @@ the progress and metadata will be saved.
 
 
 ### Link to the Postman collection with all the authorization requests and responses:
-![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
+![[Authorization collection](https://go.postman.co/workspace/Timers~1e9edfce-1e47-4521-8c6d-28315952eb9b/api/20118925-ecf8-4fe9-8584-b4dc59694c47)](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
 
 
-[Authorization collection](https://go.postman.co/workspace/Timers~1e9edfce-1e47-4521-8c6d-28315952eb9b/api/20118925-ecf8-4fe9-8584-b4dc59694c47)
