@@ -10,6 +10,7 @@ the progress and metadata will be saved.
 
 1. Create a new venv:
    python -m venv /path/to/new/virtual/environment
+   (note that the python version should be >= 3.10)
 2. Activate venv depending on your OS.
 3. Install python requirements:
    pip install -r requirements.txt
