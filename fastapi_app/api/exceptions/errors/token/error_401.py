@@ -1,5 +1,6 @@
 from fastapi_app.api.exceptions import BaseHTTPError, not_valid_credentials
-from fastapi_app.api.exceptions.dicts.token import token_expired, user_not_exists
+from fastapi_app.api.exceptions.dicts.token import (token_expired,
+                                                    user_not_exists)
 
 
 class TokenError401(BaseHTTPError):

@@ -1,4 +1,5 @@
-from pydantic import BaseModel
+from fastapi import Query
+from pydantic import BaseModel, Field
 
 
 class UserChangePasswordRequest(BaseModel):

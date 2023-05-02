@@ -1,13 +1,12 @@
 from fastapi import FastAPI
-from starlette.middleware.httpsredirect import HTTPSRedirectMiddleware
 
-from fastapi_app.api.views import time_sync, timers, auth, token
+from fastapi_app.api.views import auth, time_sync, timers, token
 from fastapi_app.database import db_engine
 from fastapi_app.database.models import Base
 
 
 def get_application() -> FastAPI:
-    application = FastAPI(title='TimerManager')
+    application = FastAPI(title="TimerManager")
     application.include_router(auth.auth_router)
     application.include_router(time_sync.time_sync_router)
     application.include_router(timers.timers_router)
@@ -27,6 +26,6 @@ async def startup():
         await conn.run_sync(Base.metadata.create_all)
 
 
-@app.on_event('shutdown')
+@app.on_event("shutdown")
 async def on_shutdown() -> None:
     await db_engine.finalize()

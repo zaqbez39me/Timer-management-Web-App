@@ -11,7 +11,10 @@ class UserAuthenticator:
         self.password_hasher = PasswordHasher(settings.password_schemes)
 
     async def register_new_user(self, db: AsyncSession, username: str, password: str):
-        user = UserDB(username=username, hashed_password=await self.password_hasher.get_password_hash(password))
+        user = UserDB(
+            username=username,
+            hashed_password=await self.password_hasher.get_password_hash(password),
+        )
         db.add(user)
         await db.commit()
         await db.refresh(user)
@@ -21,6 +24,8 @@ class UserAuthenticator:
         user: UserDB = await get_by_model_value(db, UserDB, UserDB.username, username)
         if not user:
             return False
-        if not await self.password_hasher.verify_password(password, user.hashed_password):
+        if not await self.password_hasher.verify_password(
+            password, user.hashed_password
+        ):
             return False
         return user

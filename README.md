@@ -6,18 +6,42 @@ the progress and metadata will be saved.
 
 # Instructions
 
-* To run backend part:
+## Prepare and load the env variables
+Here you should set parameters that you want to have in your project. 
+The all the environmental variables should be stored in `/env` folder. 
 
-1. Create a new venv:
-   python -m venv /path/to/new/virtual/environment
-2. Activate venv depending on your OS.
-3. Install python requirements:
-   pip install -r requirements.txt
-4. Run server using unicorn:
-   fastapi_app.main:app --host=0.0.0.0 --port=8080 --reload
+Initially, in the `env` directory saved `<name>.env-example` examples with 
+all possible variables for the `<name>.env` file.
 
+There are also exist default values for all the environment variables, so you
+obliged to set them all.
+
+## Run scripts to generate secrets and load environmental variables
+
+### Install python library that is used for loading environmental variables
+
+`pip install python-dotenv`
+
+### Generate the secret keys
+
+`python3 env/gen_secrets.py`
+
+### Set the environment variables
+
+`source <(python3 env/set_env.py)`
+
+### Build and run docker containers
+
+* To build and run docker containers just use single command:
+
+`docker-compose build --no-cache && docker-compose up`
+* To build the application using docker compose just run the following command:
+
+`docker-compose build --no-cache`
+* To up the docker-compose build use the following command:
+
+`docker-compose up`
 
 ### Link to the Postman collection with all the authorization requests and responses:
-![[Authorization collection](https://go.postman.co/workspace/Timers~1e9edfce-1e47-4521-8c6d-28315952eb9b/api/20118925-ecf8-4fe9-8584-b4dc59694c47)](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
-
+![[Authorization collection](https://www.postman.com/lunar-crescent-398747/workspace/timers/collection/17330906-a9586c45-c8f7-4381-aff5-8407553e7483)](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
 

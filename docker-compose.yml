@@ -1,0 +1,74 @@
+version: "3.9"
+
+services:
+  fastapi_app:
+    container_name: fastapi_app
+    env_file:
+      - env/pg.env
+      - env/secrets.env
+      - env/redis.env
+    environment:
+      PG_USERNAME: ${PG_USERNAME:-postgres}
+      PG_PASSWORD: ${PG_PASSWORD:-password}
+      PG_IP: ${PG_IP:-pg}
+      PG_PORT: ${PG_PORT:-5432}
+      PG_NAME: ${PG_NAME:-postgres}
+      REDIS_HOST: ${REDIS_HOST:-cache}
+      REDIS_PORT: ${REDIS_PORT:-6379}
+    build: .
+    command: bin/uvicorn fastapi_app.main:app --host=${FASTAPI_HOST:-0.0.0.0} --port=${FASTAPI_PORT:-8080}
+    ports:
+      - ${FASTAPI_PORT:-8080}:${FASTAPI_PORT:-8080}
+    restart: always
+    depends_on:
+      - pg
+      - cache
+    links:
+      - pg
+    networks:
+      - timer
+
+
+  pg:
+    container_name: pg
+    image: postgres:15.2-alpine
+    restart: always
+    env_file:
+      - env/pg.env
+    environment:
+      POSTGRES_DB: ${PG_NAME:-postgres}
+      POSTGRES_USER: ${PG_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${PG_PASSWORD:-password}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${PG_USERNAME:-postgres}" ]
+      interval: 5s
+      timeout: 1s
+      retries: 5
+    ports:
+      - ${PG_PORT:-5432}:${PG_PORT:-5432}
+    command: -p ${PG_PORT:-5432}
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+    networks:
+      - timer
+
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    entrypoint: redis-server --bind ${REDIS_HOST:-cache} --port ${REDIS_PORT:-6379} --save "" --loglevel warning --requirepass ${SECRET_REDIS?} --maxmemory 512mb --maxmemory-policy volatile-ttl
+    ports:
+      - '${REDIS_PORT:-6379}:${REDIS_PORT:-6379}'
+    volumes:
+      - cache:/var/lib/redis/data
+    networks:
+      - timer
+
+networks:
+  timer:
+    driver: bridge
+
+volumes:
+  postgres-db:
+    driver: local
+  cache:
+    driver: local

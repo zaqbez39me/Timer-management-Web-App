@@ -1,3 +1,4 @@
+import time
 from typing import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import (AsyncSession, async_sessionmaker,
@@ -6,12 +7,16 @@ from sqlalchemy.ext.asyncio import (AsyncSession, async_sessionmaker,
 
 class DatabaseEngine:
     def __init__(self, database_url):
-        self.__engine = create_async_engine(database_url)
+        while True:
+            try:
+                self.__engine = create_async_engine(database_url)
+                break
+            except Exception:
+                print(f"Connecting to {database_url}")
+                print("Database connection refused, retrying in 5 seconds...")
+                time.sleep(5)
         self.__session_maker = async_sessionmaker(
-            bind=self.__engine,
-            autocommit=False,
-            class_=AsyncSession,
-            autoflush=False
+            bind=self.__engine, autocommit=False, class_=AsyncSession, autoflush=False
         )
 
     async def get_engine(self):

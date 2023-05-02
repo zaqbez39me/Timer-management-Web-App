@@ -1,7 +1,6 @@
 fastapi~=0.95.0
 fastapi-sqlalchemy
 uvicorn
-psycopg2
 starlette~=0.26.1
 requests==2.28.2
 httpx==0.24.0
@@ -13,3 +12,5 @@ asyncpg==0.27.0
 python-multipart
 bcrypt
 pytz
+python-dotenv
+aioredis
