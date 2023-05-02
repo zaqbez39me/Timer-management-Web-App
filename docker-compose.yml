@@ -15,6 +15,8 @@ services:
       PG_NAME: ${PG_NAME:-postgres}
       REDIS_HOST: ${REDIS_HOST:-cache}
       REDIS_PORT: ${REDIS_PORT:-6379}
+      CUSTOM_DB_IP: ${CUSTOM_DB_IP:-custom_db}
+      CUSTOM_DB_PORT: 80
     build: .
     command: bin/uvicorn fastapi_app.main:app --host=${FASTAPI_HOST:-0.0.0.0} --port=${FASTAPI_PORT:-8080}
     ports:
@@ -23,14 +25,24 @@ services:
     depends_on:
       - pg
       - cache
+      - custom_db
     links:
       - pg
     networks:
       - timer
 
 
+  custom_db:
+    container_name: ${CUSTOM_DB_IP:-custom_db}
+    build:
+      context: ./custom_db
+    ports:
+      - ${CUSTOM_DB_EXTERNAL_PORT:-5000}:80
+    networks:
+      - timer
+
   pg:
-    container_name: pg
+    container_name: ${PG_IP:-pg}
     image: postgres:15.2-alpine
     restart: always
     env_file:
@@ -53,6 +65,7 @@ services:
       - timer
 
   cache:
+    container_name: ${REDIS_HOST:-cache}
     image: redis:6.2-alpine
     restart: always
     entrypoint: redis-server --bind ${REDIS_HOST:-cache} --port ${REDIS_PORT:-6379} --save "" --loglevel warning --requirepass ${SECRET_REDIS?} --maxmemory 512mb --maxmemory-policy volatile-ttl
