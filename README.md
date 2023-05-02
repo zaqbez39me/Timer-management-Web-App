@@ -8,12 +8,12 @@ the progress and metadata will be saved.
 
 ## Prepare and load the env variables
 Here you should set parameters that you want to have in your project. 
-The all the environmental variables should be stored in `/env` folder. 
+All the the environmental variables should be stored in `/env` folder. 
 
-Initially, in the `env` directory saved `<name>.env-example` examples with 
+Initially, in the `env` directory there are `<name>.env-example` examples with 
 all possible variables for the `<name>.env` file.
 
-There are also exist default values for all the environment variables, so you
+There are also exist default values for all the environment variables, so you are not
 obliged to set them all.
 
 ## Run scripts to generate secrets and load environmental variables
