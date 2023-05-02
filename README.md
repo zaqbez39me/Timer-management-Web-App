@@ -6,6 +6,9 @@ the progress and metadata will be saved.
 
 # Instructions
 
+## Load the submodules
+Run `git submodule update --init --recursive`
+
 ## Prepare and load the env variables
 Here you should set parameters that you want to have in your project. 
 All the environmental variables should be stored in `/env` folder. 
