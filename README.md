@@ -43,5 +43,6 @@ obliged to set them all.
 `docker-compose up`
 
 ### Link to the Postman collection with all the authorization requests and responses:
-![[Authorization collection](https://www.postman.com/lunar-crescent-398747/workspace/timers/collection/17330906-a9586c45-c8f7-4381-aff5-8407553e7483)](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
+[![Authorization collection](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)](https://www.postman.com/lunar-crescent-398747/workspace/timers/collection/17330906-a9586c45-c8f7-4381-aff5-8407553e7483)
+
 
