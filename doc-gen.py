@@ -39,5 +39,5 @@ if __name__ == "__main__":
     directory = "docs/"
     if not os.path.exists(directory):
         os.mkdir(directory, exist_ok=True)
-    with open(f"{directory}docs.html", "w") as fd:
+    with open(f"{directory}index.html", "w") as fd:
         print(HTML_TEMPLATE % json.dumps(app.openapi()), file=fd)
