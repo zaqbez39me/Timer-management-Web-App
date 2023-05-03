@@ -23,9 +23,12 @@ services:
       - ${FASTAPI_PORT:-8080}:${FASTAPI_PORT:-8080}
     restart: always
     depends_on:
-      - pg
-      - cache
-      - custom_db
+      pg:
+        condition: service_healthy
+      cache:
+        condition: service_started
+      custom_db:
+        condition: service_healthy
     links:
       - pg
     networks:
@@ -34,10 +37,14 @@ services:
 
   custom_db:
     container_name: ${CUSTOM_DB_IP:-custom_db}
-    build:
-      context: ./custom_db
+    build: ./custom_db
     ports:
       - ${CUSTOM_DB_EXTERNAL_PORT:-5000}:80
+    healthcheck:
+      test: ["CMD", "curl", "-f", "-G", "--data-urlencode", "query=someInvalidQuery", "http://localhost:80/Query"]
+      interval: 5s
+      timeout: 1s
+      retries: 5
     networks:
       - timer
 
@@ -52,7 +59,7 @@ services:
       POSTGRES_USER: ${PG_USERNAME:-postgres}
       POSTGRES_PASSWORD: ${PG_PASSWORD:-password}
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${PG_USERNAME:-postgres}" ]
+      test: [ "CMD-SHELL", "pg_isready --port=${PG_PORT:-5432} -U ${PG_USERNAME:-postgres}" ]
       interval: 5s
       timeout: 1s
       retries: 5
