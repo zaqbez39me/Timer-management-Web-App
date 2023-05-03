@@ -13,18 +13,18 @@ def main():
 
     if not os.getenv('SECRET_ACCESS_KEY'):
         secret_access_key = secrets.token_hex(64)
-        with open(secrets_file, 'a') as secret_file:
+        with open(secrets_file, 'a', encoding='utf-8') as secret_file:
             secret_file.write(f'SECRET_ACCESS_KEY={secret_access_key}\n')
 
     if not os.getenv('SECRET_REFRESH_KEY'):
         secret_refresh_key = secrets.token_hex(128)
-        with open(secrets_file, 'a') as secret_file:
+        with open(secrets_file, 'a', encoding='utf-8') as secret_file:
             secret_file.write(f'SECRET_REFRESH_KEY={secret_refresh_key}\n')
 
     if not os.getenv('SECRET_REDIS'):
         rand = Random()
         secret_redis = ''.join(rand.choice(string.ascii_letters + string.digits) for _ in range(256))
-        with open(secrets_file, 'a') as secret_file:
+        with open(secrets_file, 'a', encoding='utf-8') as secret_file:
             secret_file.write(f'SECRET_REDIS={secret_redis}\n')
 
 

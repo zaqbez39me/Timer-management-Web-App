@@ -16,7 +16,7 @@ from fastapi_app.api.utils.token import (verify_access_token,
                                          verify_refresh_token)
 from fastapi_app.database import db_engine
 from fastapi_app.database.models.user import SessionDB, UserDB
-from fastapi_app.database.utils import db_model_to_schema, get_by_model_value
+from fastapi_app.database.utils import get_by_model_value
 
 token_router = APIRouter(tags=["token"], prefix="/token")
 

@@ -14,3 +14,4 @@ bcrypt
 pytz
 python-dotenv
 aioredis
+python-dotenv
