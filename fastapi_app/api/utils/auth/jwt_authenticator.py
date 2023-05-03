@@ -102,7 +102,7 @@ class JWTAuthenticator:
         payload = jwt.decode(token, secret, algorithms=[self.algorithm])
         format_str = "%Y-%m-%d %H:%M:%S.%f"
         date_expires = pytz.UTC.localize(
-            datetime.strptime(payload.get("date_expires"), format_str)
+            dt=datetime.strptime(payload.get("date_expires"), format_str)
         )
         return TokenData(
             token_id=payload.get("id"),
@@ -156,7 +156,7 @@ class JWTAuthenticator:
 
     @staticmethod
     async def add_to_blacklist(token, user_id, expiration):
-        await redis_client.set(
+        await redis_client.set_async(
             name=f"blacklist:{token}",
             value=TokenBlacklist(user_id=user_id),
             expiration=expiration,
@@ -164,7 +164,7 @@ class JWTAuthenticator:
 
     @staticmethod
     async def __is_blacklisted(token):
-        if await redis_client.get(f"blacklist:{token}", model=TokenBlacklist):
+        if await redis_client.get_async(f"blacklist:{token}", model=TokenBlacklist):
             return True
         return False
 
@@ -187,9 +187,9 @@ class JWTAuthenticator:
                 raise NOT_VALID_CREDENTIALS_EXCEPTION
             format_str = "%Y-%m-%d %H:%M:%S.%f"
             date_expires = pytz.UTC.localize(
-                datetime.strptime(payload.get("date_expires"), format_str)
+                dt=datetime.strptime(payload.get("date_expires"), format_str)
             )
-            if date_expires < pytz.UTC.localize(datetime.utcnow()):
+            if date_expires < pytz.UTC.localize(dt=datetime.utcnow()):
                 await delete_by_model_value(
                     db, AccessTokenDB, AccessTokenDB.token_id, payload.get("id")
                 )

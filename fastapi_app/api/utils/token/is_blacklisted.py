@@ -3,6 +3,6 @@ from fastapi_app.cache import redis_client
 
 
 async def is_blacklisted(token):
-    if await redis_client.get(f"blacklist:{token}", model=TokenBlacklist):
+    if await redis_client.get_async(f"blacklist:{token}", model=TokenBlacklist):
         return True
     return False

@@ -19,6 +19,10 @@ app = get_application()
 
 @app.on_event("startup")
 async def startup():
+    """
+    This the startup function that
+    :return:
+    """
     # create db tables
     engine = await db_engine.get_engine()
     async with engine.begin() as conn:
