@@ -1,6 +1,7 @@
 from datetime import timedelta
+from typing import Optional
 
-from pydantic import BaseSettings, Field
+from pydantic import BaseSettings, Field, PostgresDsn, validator
 
 # Hashing settings
 PASSWORD_SCHEMES = ["bcrypt"]
@@ -17,17 +18,41 @@ class PostgresSettings(BaseSettings):
     pg_password: str = Field(default="password", env="PG_PASSWORD")
     pg_ip: str = Field(default="pg", env="PG_IP")
     pg_name: str = Field(default="postgres", env="PG_NAME")
-    pg_port: int | str = Field(5432, env="PG_PORT")
+    pg_port: str = Field("5432", env="PG_PORT")
+    pg_database_uri: Optional[PostgresDsn] = None
+
+    @validator("pg_database_uri", pre=True)
+    def assemble_db_connection(cls, v: Optional[str], values: dict[str, any]) -> any:
+        if isinstance(v, str):
+            return v
+        return PostgresDsn.build(
+            scheme="postgresql+asyncpg",
+            user=values.get("pg_username"),
+            password=values.get("pg_password"),
+            host=values.get("pg_ip"),
+            port=values.get("pg_port"),
+            path=f"/{values.get('pg_name') or ''}",
+        )
 
     class Config:
         env_prefix = "PG_"
         env_file_encoding = "utf-8"
 
+
+# Custom-DB can be queried like so:
+# requests.get(custom_db_settings.custom_db_url,params={'query':"create entity Meat {mass: int}"} )
+class CustomDbSettings(BaseSettings):
+    custom_db_ip: str = Field(default="custom_db", env="CUSTOM_DB_IP")
+    custom_db_port: str = Field(default="80", env="CUSTOM_DB_PORT")
+
+    class Config:
+        env_prefix = "CUSTOM_DB_"
+        env_file_encoding = "utf-8"
+
     @property
-    def pg_url(self) -> str:
+    def custom_db_url(self) -> str:
         return (
-            f"postgresql+asyncpg://{self.pg_username}:{self.pg_password}"
-            f"@{self.pg_ip}:{self.pg_port}/{self.pg_name}"
+            f"http://{self.custom_db_ip}:{self.custom_db_port}/Query"
         )
 
 
@@ -59,7 +84,9 @@ class Settings(BaseSettings):
     refresh_token_delta: timedelta = REFRESH_TOKEN_DELTA
 
 
+custom_db_settings = CustomDbSettings()
 redis_settings = RedisSettings()
 secret_settings = SecretSettings()
 pg_settings = PostgresSettings()
+
 settings = Settings()

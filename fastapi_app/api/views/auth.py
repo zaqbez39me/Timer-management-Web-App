@@ -67,8 +67,7 @@ async def register(
             **user.__dict__, message="User Created Successfully."
         )
         return response
-    else:
-        raise USER_USERNAME_OCCUPIED_EXCEPTION
+    raise USER_USERNAME_OCCUPIED_EXCEPTION
 
 
 @auth_router.post(
@@ -90,7 +89,7 @@ async def login(
     user = db_model_to_schema(user_db, UserModel)
     if not session_id or not await session_validate(db, session_id):
         session_id = str(uuid.uuid4())
-        await redis_client.set(
+        await redis_client.set_async(
             name=f"session:{session_id}", value=SessionUser(user_id=user_db.user_id)
         )
         await add_to_db(
@@ -132,11 +131,11 @@ async def logout(
                 refresh_token.refresh_token
             )
         )
-        access_expires = pytz.UTC.localize(access_token_data.datetime_expires) - pytz.UTC.localize(
-            datetime.utcnow()
+        access_expires = pytz.UTC.localize(dt=access_token_data.datetime_expires) - pytz.UTC.localize(
+            dt=datetime.utcnow()
         )
         refresh_expires = refresh_token_data.datetime_expires - pytz.UTC.localize(
-            datetime.utcnow()
+            dt=datetime.utcnow()
         )
         await jwt_authenticator.add_to_blacklist(
             access_token_data.token, user_id, access_expires
@@ -167,8 +166,7 @@ async def get_user_me(
         user = db_model_to_schema(user_db, UserModel)
         response = UserMeResponse(user=user, message="User information report.")
         return response
-    else:
-        raise NOT_VALID_CREDENTIALS_EXCEPTION
+    raise NOT_VALID_CREDENTIALS_EXCEPTION
 
 
 async def change_password_no_auth(db, user_db, new_password):

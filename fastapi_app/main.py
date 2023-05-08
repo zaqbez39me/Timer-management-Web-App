@@ -1,8 +1,10 @@
-from fastapi import FastAPI
+import time
 
-from fastapi_app.api.views import auth, time_sync, timers, token
-from fastapi_app.database import db_engine
-from fastapi_app.database.models import Base
+from fastapi import FastAPI
+from starlette.requests import Request
+
+from .api.views import auth, time_sync, timers, token
+from .database import db_engine
 
 
 def get_application() -> FastAPI:
@@ -19,13 +21,24 @@ app = get_application()
 
 @app.on_event("startup")
 async def startup():
+    """
+    This the startup function that
+    :return:
+    """
     # create db tables
-    engine = await db_engine.get_engine()
-    async with engine.begin() as conn:
-        # await conn.run_sync(Base.metadata.drop_all)
-        await conn.run_sync(Base.metadata.create_all)
+    await db_engine.start()
 
 
 @app.on_event("shutdown")
 async def on_shutdown() -> None:
     await db_engine.finalize()
+
+
+@app.middleware("http")
+async def add_process_time_header(request: Request, call_next):
+    start_time = time.time()
+    response = await call_next(request)
+    process_time = time.time() - start_time
+    response.headers["X-Process-Time"] = str(process_time * 1e3)
+
+    return response
