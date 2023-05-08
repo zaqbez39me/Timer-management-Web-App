@@ -1,0 +1,3 @@
+[submodule "custom_db"]
+	path = custom_db
+	url = https://github.com/Dirakon/Custom-Database-Server.git
