@@ -10,7 +10,6 @@ from fastapi_app.api.exceptions.token import (NOT_VALID_CREDENTIALS_EXCEPTION,
                                               USER_NOT_EXISTS_EXCEPTION)
 from fastapi_app.api.schemas.session import SessionUser
 from fastapi_app.api.schemas.token import TokenData
-from fastapi_app.api.utils.token import is_blacklisted
 from fastapi_app.cache import redis_client
 from fastapi_app.database.models import Base
 from fastapi_app.database.models.user import SessionDB, UserDB
@@ -39,13 +38,12 @@ async def verify_token(
         )
         if not session:
             raise NOT_VALID_CREDENTIALS_EXCEPTION
-        else:
-            await redis_client.set(
-                name=f"session:{session.session_id}",
-                value=SessionUser(user_id=session.user_id),
-            )
-        if pytz.UTC.localize(token_data.datetime_expires) < pytz.UTC.localize(
-            datetime.utcnow()
+        await redis_client.set_async(
+            name=f"session:{session.session_id}",
+            value=SessionUser(user_id=session.user_id),
+        )
+        if pytz.UTC.localize(dt=token_data.datetime_expires) < pytz.UTC.localize(
+            dt=datetime.utcnow()
         ):
             await delete_by_model_value(
                 db, token_db_model, token_db_model.token_id, token_data.token_id
