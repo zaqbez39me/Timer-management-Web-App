@@ -1,9 +1,11 @@
-from typing import Any, Type, TypeVar
+from typing import Any, Type, TypeVar, Callable
 
+from fastapi import Depends
 from pydantic import BaseModel
 from sqlalchemy import Column, delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.background import BackgroundTasks
+from http.client import HTTPConnection
 
 from fastapi_app.database.models import Base
 
@@ -81,3 +83,31 @@ async def delete_by_model_value_bg(
         value=value,
         commit=commit,
     )
+
+
+class CustomDBWorker:
+    def __init__(self, conn: HTTPConnection) -> None:
+        self.conn = conn
+
+    async def send_with_query(self, method: str='GET', url: str='/Query', query_params: dict=None):
+        if query_params is None:
+            return self.conn.request(method, url)
+        else:
+            params=[f'{key}={value}' for key, value in query_params.items()]
+            query_params = '&'.join(params)
+            return self.conn.request(method, f'{url}?{query_params}')
+
+
+def get_custom_db_worker(
+    worker: Type[CustomDBWorker]
+) -> Callable[[HTTPConnection], CustomDBWorker]:
+    def _get_worker(
+            conn: HTTPConnection = Depends(get_connection)
+    ):
+        return worker(conn)
+    return _get_worker
+
+
+async def get_connection():
+    async with HTTPConnection("localhost", 5000) as conn:
+        yield conn
