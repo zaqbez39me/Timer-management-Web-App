@@ -44,7 +44,7 @@ async def add_timer(
     "/resume",
     status_code=status.HTTP_200_OK
 )
-async def get_a_specific_user(
+async def resume_timer(
         access_token: Annotated[str, Depends(oauth2_scheme)],
         timer_request: TimerRequest,
         db: AsyncSession = Depends(db_engine.session),
@@ -63,7 +63,7 @@ async def get_a_specific_user(
     "/stop",
     status_code=status.HTTP_200_OK
 )
-async def get_a_specific_user(
+async def stop_timer(
         access_token: Annotated[str, Depends(oauth2_scheme)],
         timer_request: TimerRequest,
         db: AsyncSession = Depends(db_engine.session),
@@ -82,7 +82,7 @@ async def get_a_specific_user(
     "/reset",
     status_code=status.HTTP_200_OK
 )
-async def get_a_specific_user(
+async def reset_timer(
         access_token: Annotated[str, Depends(oauth2_scheme)],
         timer_request: TimerRequest,
         db: AsyncSession = Depends(db_engine.session),
@@ -101,7 +101,7 @@ async def get_a_specific_user(
     "/change-timer-duration",
     status_code=status.HTTP_200_OK
 )
-async def get_a_specific_user(
+async def change_timer_duration(
         access_token: Annotated[str, Depends(oauth2_scheme)],
         name: Annotated[str, Body(alias="name")],
         timer_duration: Annotated[int, Body(alias="timer_duration")],
@@ -121,7 +121,7 @@ async def get_a_specific_user(
     "/remove",
     status_code=status.HTTP_200_OK
 )
-async def get_a_specific_user(
+async def remove_timer(
         access_token: Annotated[str, Depends(oauth2_scheme)],
         timer_request: TimerRequest,
         db: AsyncSession = Depends(db_engine.session),
@@ -140,7 +140,7 @@ async def get_a_specific_user(
     "/rename",
     status_code=status.HTTP_200_OK
 )
-async def get_a_specific_user(
+async def rename_timer(
         access_token: Annotated[str, Depends(oauth2_scheme)],
         timer_request: TimerRenameRequest,
         db: AsyncSession = Depends(db_engine.session),
