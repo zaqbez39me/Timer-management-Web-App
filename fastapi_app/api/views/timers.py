@@ -13,7 +13,7 @@ from fastapi_app.api.utils.session import session_validate
 from fastapi_app.api.utils.session.session_to_user_id import session_to_user_id
 from fastapi_app.api.utils.token import verify_access_token
 from fastapi_app.database import db_engine
-from fastapi_app.database.utils import get_custom_db_worker, CustomDBWorker
+from fastapi_app.custom_database.utils import CustomDBWorker, get_custom_db_worker
 
 timers_router = APIRouter(tags=["timers"], prefix="/timers")
 

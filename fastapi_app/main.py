@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from starlette.requests import Request
 
 from .api.views import auth, time_sync, timers, token
+from .custom_database.models import CustomBaseModel
 from .database import db_engine
 
 
@@ -27,6 +28,7 @@ async def startup():
     """
     # create db tables
     await db_engine.start()
+    await CustomBaseModel.create_all()
 
 
 @app.on_event("shutdown")

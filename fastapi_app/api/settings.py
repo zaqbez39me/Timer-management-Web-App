@@ -42,8 +42,8 @@ class PostgresSettings(BaseSettings):
 # Custom-DB can be queried like so:
 # requests.get(custom_db_settings.custom_db_url,params={'query':"create entity Meat {mass: int}"} )
 class CustomDbSettings(BaseSettings):
-    custom_db_ip: str = Field(default="localhost", env="CUSTOM_DB_IP")
-    custom_db_port: str = Field(default="5000", env="CUSTOM_DB_PORT")
+    custom_db_ip: str = Field(default="custom_db", env="CUSTOM_DB_IP")
+    custom_db_port: str = Field(default="80", env="CUSTOM_DB_PORT")
 
     class Config:
         env_prefix = "CUSTOM_DB_"
