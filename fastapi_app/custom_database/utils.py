@@ -32,10 +32,14 @@ class CustomDBWorker:
     @staticmethod
     def get_data_from_response(func):
         async def wrap(*args, **kwargs):
-            response = (await func(*args, **kwargs)).get("Ok")
+            result = (await func(*args, **kwargs))
+            response = result.get("Ok")
             if response is not None or kwargs.get('safe'):
                 return response
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid request")
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail={"Error": result.get("Error")}
+            )
 
         return wrap
 
@@ -142,7 +146,7 @@ class CustomDBWorker:
                 timer.pop("pointer")
                 new_timer = (await self.add_timer(timer))[0]
                 timer_names = [cur_timer["pointer"] for cur_timer
-                               in timers if cur_timer["name"] != new_timer_name] + [new_timer]
+                               in timers if cur_timer["name"] != old_timer_name] + [new_timer]
                 await self.update_user(user, timer_names)
                 await self.remove_timer(timer_to_delete)
                 return new_timer
@@ -234,9 +238,18 @@ class CustomDBWorker:
                 return new_timer
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No such timer in database")
 
+    async def get_all_timers_for_user_pure(self, user_id):
+        timers = await self.get_timers_for_user(user_id)
+        pure_timers = []
+        for timer in timers:
+            timer.pop('pointer')
+            pure_timers.append(timer)
+        return timers
+
     async def create_table(self, model):
-        fields = model().get_string_repr()
-        query = f'create entity {model.__name__} {{{fields}}}'
+        model = model()
+        fields = model.get_string_repr()
+        query = f'create entity {model.table_name} {{{fields}}}'
         return await self.send_only_query(query)
 
 

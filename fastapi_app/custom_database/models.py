@@ -1,3 +1,4 @@
+import logging
 from typing import Optional
 
 from pydantic import BaseModel
@@ -20,11 +21,15 @@ class CustomBaseModel(BaseModel):
 
     @staticmethod
     async def create_all():
-        worker = get_custom_db_worker(CustomDBWorker)(next(get_connection()))
-        all_subclasses = CustomBaseModel.__subclasses__()
-        all_subclasses.sort(key=lambda x: x().priority)
-        for subclass in all_subclasses:
-            await worker.create_table(subclass)
+        try:
+            worker = get_custom_db_worker(CustomDBWorker)(next(get_connection()))
+            all_subclasses = CustomBaseModel.__subclasses__()
+            all_subclasses.sort(key=lambda x: x().priority)
+            for subclass in all_subclasses:
+                await worker.create_table(subclass)
+        except OSError:
+            logger = logging.getLogger(__name__)
+            logger.error("ERROR: Error creating table in custom database")
 
     def get_string_repr(self):
         return self.string_repr
@@ -44,7 +49,7 @@ class TimerCustom(CustomBaseModel):
 
 class UserCustom(CustomBaseModel):
     priority: int = 2
-    string_repr: str = 'id: int(unique), timers: [%26Timer]'
+    string_repr: str = 'id: int(unique), timers: [&Timer]'
     table_name: str = 'User'
 
     id: Optional[int]

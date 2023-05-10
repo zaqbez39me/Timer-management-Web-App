@@ -78,6 +78,24 @@ async def stop_timer(
     return resp
 
 
+@timers_router.get(
+    "/",
+    status_code=status.HTTP_200_OK
+)
+async def get_all_timers(
+        access_token: Annotated[str, Depends(oauth2_scheme)],
+        db: AsyncSession = Depends(db_engine.session),
+        session_id: str | None = Cookie(default=None),
+        worker: CustomDBWorker = Depends(get_custom_db_worker(CustomDBWorker))
+):
+    if not session_id or not await session_validate(db, session_id):
+        raise NOT_VALID_CREDENTIALS_EXCEPTION
+    token_data = await verify_access_token(db, access_token, session_id)
+    user_id = await session_to_user_id(db, token_data.session_id)
+    resp = await worker.get_all_timers_for_user_pure(user_id)
+    return resp
+
+
 @timers_router.post(
     "/reset",
     status_code=status.HTTP_200_OK
