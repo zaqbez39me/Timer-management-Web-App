@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown timers</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="header">
+    <div class="timer__wrapper">
+        <div class="header__wrapper">
+            <div class="header__logo">
+                <button class="header__logo-link">
+                    <img src="./img/svg/countdown-timers-small.svg" alt="countdown timers">
+                </button>
+            </div>
+            <nav class="header__nav">
+                <ul class="header__list">
+                    <li class="header__item">
+                        <button class="header__add">
+                            <img src="img/svg/plus.svg" class="timer-image" alt="add">
+                        </button>
+                    </li>
+                    <li class="header__item">
+                        <button class="header__exit">
+                            <img src="img/svg/exit.svg" class="timer-image" alt="exit">
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+<main class="main">
+    <div class="timer__wrapper" style="padding-top: 274px">
+        <span class="timers">
+        <form class="timer" id="1">
+            <div class="timer-name">
+                <label for="name-picker">
+                    <input type="text" class="input_name" placeholder="New Timer" value="New Timer" id="name-picker">
+                </label>
+            </div>
+            <div class="timer-time">
+                <input type="date" name="begin" placeholder="dd-mm-yyyy" class="input-date" id="date-picker">
+
+            </div>
+
+            <div class="timer-buttons" id="button-picker">
+                <button type="submit" class="timer-button" id="approve">
+                    <img src="./img/svg/approve.svg" class="timer-image">
+                </button>
+                <button type="button" class="timer-button" id="reject">
+                    <img src="./img/svg/reject.svg" class="timer-image">
+                </button>
+            </div>
+
+        </form>
+        <form class="timer" id="2" hidden>
+                <p class="input_name, timer-name" id="timer-alias"></p>
+            <div class="timer-time">
+                <ul class="dig-time" id="timer-clock">
+                    <li><span>00</span>:</li><li><span>00</span>:</li><li><span>00</span>:</li><li><span>00</span></li>
+                </ul>
+            </div>
+            <div class="timer-buttons" id="timer-buttons">
+                <button type="button" class="timer-button">
+                    <img src="./img/svg/pause.svg" class="timer-image">
+                </button>
+                <button type="submit" class="timer-button">
+                    <img src="./img/svg/reset.svg" class="timer-image">
+                </button>
+                <button type="submit" class="timer-button">
+                    <img src="./img/svg/trash.svg" class="timer-image">
+                </button>
+            </div>
+        </form>
+        <form class="timer" id="3" hidden>
+                <p class="input_name, timer-name">Title</p>
+            <div class="timer-time">
+                <ul class="finish-time" id="clock-finisher">
+                    <li><span>00</span>:</li><li><span>00</span>:</li><li><span>00</span>:</li><li><span>00</span></li>
+                </ul>
+            </div>
+            <div class="timer-buttons" id="button-finisher">
+                <button class="timer-button">
+                    <img src="./img/svg/approve.svg" class="timer-image">
+                </button>
+            </div>
+        </form>
+        </span>
+        <div class="timer" id="addTime">
+            <button class="timer-time" id="createTime" style="margin-top: 67.06px">
+                <img src="img/svg/plus.svg" class="timer-image">
+            </button>
+        </div>
+
+    </div>
+</main>
+<script src="script_3.js"></script>
+</body>
+</html>
