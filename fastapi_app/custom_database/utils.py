@@ -60,8 +60,11 @@ class CustomDBWorker:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid request")
 
     async def get_timers_for_user(self, user_id: int):
-        user = await self.get_users_by_id([user_id])
-        return await self.get_timers_from_user(user[0])
+        users = await self.get_users_by_id([user_id])
+        if len(users) == 0:
+            # The user is not registered in Custom-DB (they didn't create any timers yet)
+            return []
+        return await self.get_timers_from_user(users[0])
 
     async def get_timers_for_users(self, user_ids: list[int]):
         users = await self.get_users_by_id(user_ids)

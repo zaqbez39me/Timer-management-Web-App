@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, Cookie, Body
@@ -33,9 +34,10 @@ async def add_timer(
         raise NOT_VALID_CREDENTIALS_EXCEPTION
     token_data = await verify_access_token(db, access_token, session_id)
     user_id = await session_to_user_id(db, token_data.session_id)
+    start_time = datetime.utcnow() if new_timer.start_time is None else new_timer.start_time
     return await worker.add_timer_for_user(user_id=user_id,
                                            name=new_timer.name,
-                                           start_time=new_timer.start_time,
+                                           start_time=start_time,
                                            duration_seconds=new_timer.duration_seconds,
                                            active=new_timer.active)
 
