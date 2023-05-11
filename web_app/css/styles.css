@@ -216,6 +216,7 @@ textarea {
 button,
 input {
     line-height: normal;
+    caret-color: white;
 }
 
 /**
@@ -397,7 +398,7 @@ html {
     box-sizing: border-box;
 }
 
-html, body {
+body {
     margin: 0;
     padding: 0;
     height: 100%;
@@ -417,6 +418,34 @@ html, body {
     top: 0;
     left: 0;
     width: 100%;
+}
+
+.header__add {
+    display: flex;
+    width: 140.12px;
+    height: 66.18px;
+    border-radius: 17.8996px;
+    background: #1F1F27;
+    margin: auto;
+    border: 0;
+    margin-right: 20px;
+
+}
+
+.header__exit {
+    display: flex;
+    width: 75px;
+    height: 75px;
+    border-radius: 17.8996px;
+    background: #1F1F27;
+    margin: auto;
+    border: 0;
+}
+
+.header__link, .header__logo-link {
+    background-color: transparent;
+    border: 0;
+    border-radius: 17.8996px;
 }
 
 .wrapper {
@@ -442,6 +471,7 @@ html, body {
 .header__list {
     display: flex;
     flex-wrap: wrap;
+
 }
 
 .header__logo {
@@ -491,6 +521,7 @@ html, body {
     padding: 25px 22px 39px;
     text-align: center;
 }
+
 .input-field {
     margin: 21px 0;
     background: #F6F6F6;
@@ -503,9 +534,11 @@ html, body {
     transition: max-height 0.5s;
     overflow: hidden;
 }
+
 .input-field:last-child {
     margin-bottom: 34px;
 }
+
 .ilogreg {
     width: 100%;
     background: #F6F6F6;
@@ -513,6 +546,7 @@ html, body {
     border-radius: 8px;
     padding: 10px 16px;
 }
+
 .ilogreg::placeholder {
     font-family: 'Inter', serif;
     font-style: normal;
@@ -523,12 +557,68 @@ html, body {
     color: #AEAEAE;
 }
 
+.error-field1 {
+    margin: 21px 0;
+    background: #f8a9a9;
+    border-radius: 8px;
+    border: 0 solid #ff0000;
+    display: flex;
+    align-items: center;
+    max-height: 0;
+    transition: max-height 0.5s;
+    overflow: hidden;
+}
+
+.error-field2 {
+    margin: 21px 0;
+    background: #f8a9a9;
+    border-radius: 8px;
+    border: 0 solid #ff0000;
+    display: flex;
+    align-items: center;
+    max-height: 0;
+    transition: max-height 0.5s;
+    overflow: hidden;
+}
+
+.errreg {
+    width: 100%;
+    background: #f8a9a9;
+    border: 1px solid #ff0000;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-family: 'Inter', serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    color: #ff0000;
+}
+
+.errlog {
+    width: 100%;
+    background: #f8a9a9;
+    border: 1px solid #ff0000;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-family: 'Inter', serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    color: #ff0000;
+}
+
+.errreg {
+
+}
 
 .btn-field {
     width: 100%;
     display: flex;
     justify-content: space-between;
 }
+
 .btn-field button {
     flex-basis: 48%;
     background: #8589E4;
@@ -543,9 +633,168 @@ html, body {
     font-size: 16px;
     line-height: 19px;
 }
+
 .btn-field button.disable {
     background: #eaeaea;
     color: #555
 }
 
+.timer {
+    /*background: #1F1F27;*/
+    width: 350.72px;
+    height: 280px;
+    margin-right: 37.75px;
+    margin-top: 37.75px;
+    display: inline-block;
+    flex-wrap: wrap;
+    vertical-align: top;
+
+
+}
+
+.timer-name {
+    text-align: center;
+    font-family: 'Inter', serif;
+    font-style: normal;
+    font-weight: 310;
+    font-size: 48.9096px;
+    line-height: 59px;
+    padding-bottom: 8.06px;
+    background: linear-gradient(62.99deg, #EEF1F0 7.18%, #71757E 83.56%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+
+.timer-time {
+    display: flex;
+    width: 300.23px;
+    height: 120.88px;
+    background: #1F1F27;
+    border-radius: 17.9085px;
+    margin: 0 auto;
+    margin-bottom: 16.06px;
+    border: 0;
+
+}
+[hidden] { display: none !important; }
+.timer-buttons {
+    width: 207px;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    margin: auto;
+}
+
+.timer-button {
+    display: flex;
+    background: #1F1F27;
+    width: 50px;
+    height: 50px;
+    border-radius: 16px;
+    animation: textColor 10s ease infinite;
+    border: 0;
+    margin: auto;
+}
+
+.timer-image {
+    display: flex;
+    margin: auto;
+
+}
+
+.header__link:hover, .header__link:active,
+.timer-button:hover, .timer-button:active,
+.header__add:hover, .header__add:active,
+.header__exit:hover, .header__exit:active,
+#createTime:hover, #createTime:active {
+    background: #191920;
+}
+
+.input_name {
+    background: transparent;
+    border: 0;
+    max-width: 259px;
+    text-align: center;
+    margin: auto;
+}
+.input_name::placeholder {
+    background: linear-gradient(62.99deg, #D63B3B 7.18%, #9C3C3C 83.56%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+.input-date {
+    /*background: transparent; */
+    /*display: flex;*/
+    border: 0;
+    max-width: 259px;
+    font-family: 'Inter', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 39.1438px;
+    padding-bottom: 10px;
+    line-height: 61px;
+    margin: auto;
+    /* identical to box height */
+
+
+    background: linear-gradient(62.99deg, #EF2525 18.31%, #BE2121 83.56%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+
+
+
+}
+.dig-time {
+    margin: auto;
+    padding-bottom: 100px;
+    list-style-type: none;
+    font-family: 'Inter', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 50.1438px;
+    line-height: 61px;
+    /* identical to box height */
+
+
+    background: linear-gradient(62.99deg, #EEF1F0 7.18%, #71757E 83.56%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+.dig-time li {
+    padding-top: 30px;
+    display: inline-block;
+    margin:auto;
+}
+.finish-time {
+    list-style-type: none;
+    font-family: 'Inter', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 50.1438px;
+    line-height: 61px;
+    /* identical to box height */
+
+
+    background: linear-gradient(62.99deg, #25EFAC 18.31%, #21BE57 83.56%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+
+}
+
+.finish-time li {
+    padding-top: 30px;
+    display: inline-block;
+    margin: auto;
+}
 /* Register styles end */
+
