@@ -31,7 +31,13 @@
                                 <input class="ilogreg" type="password" id="pass" placeholder="Password">
                             </div>
                             <div class="input-field" id="cPass">
-                                <input class="ilogreg" type="text" id="secPass" placeholder="Confirm Password">
+                                <input class="ilogreg" type="password" id="secPass" placeholder="Confirm Password">
+                            </div>
+                            <div class="error-field1" id="error1">
+                                <p class="errreg" id="diffPass-problem">Different passwords or Username is incorrect</p>
+                            </div>
+                            <div class="error-field1" id="error2">
+                                <p class="errlog" id="incorrect-data">Incorrect name or password</p>
                             </div>
                         </div>
                         <div class="btn-field">
@@ -42,30 +48,8 @@
                 </div>
             </div>
         </main>
-    <script>
-        let lBtn = document.getElementById("lBtn")
-        let rBtn = document.getElementById("rBtn")
-        let cPass = document.getElementById("cPass")
-        let title = document.getElementById("title")
-        let p = document.querySelector('#pass')
-        lBtn.onclick = function(){
-            if (cPass.style.maxHeight==="0px"){
-                console.log(p.value)
-            }else {
-                cPass.style.maxHeight = "0px";
-                cPass.style.border = "0"
-                title.innerHTML = "Login"
-                rBtn.classList.add("disable")
-                lBtn.classList.remove("disable")
-            }
-        }
-        rBtn.onclick = function(){
-            cPass.style.maxHeight="50px"
-            cPass.style.border="1px solid #E8E8E8"
-            title.innerHTML = "Register"
-            rBtn.classList.remove("disable")
-            lBtn.classList.add("disable")
-        }
+    <script src="script_1.js">
+
     </script>
     </body>
 </html>
