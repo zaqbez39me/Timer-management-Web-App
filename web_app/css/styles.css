@@ -734,8 +734,8 @@ body {
     font-family: 'Inter', serif;
     font-style: normal;
     font-weight: 400;
-    font-size: 39.1438px;
-    padding-bottom: 10px;
+    font-size: 35.1438px;
+    padding-bottom: 5px;
     line-height: 61px;
     margin: auto;
     /* identical to box height */
@@ -746,9 +746,11 @@ body {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     text-fill-color: transparent;
-
-
-
+    text-transform: uppercase;
+}
+.input-date input[type="date"] {
+    font-family: 'Inter', sans-serif;
+    text-transform: uppercase;
 }
 .dig-time {
     margin: auto;
