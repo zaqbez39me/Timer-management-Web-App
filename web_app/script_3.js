@@ -115,6 +115,9 @@ function createTime() {
     timeMe()
 }
 
+madder = document.querySelector(".header__add")
 adder = document.querySelector("#add-bottom")
 adder.addEventListener('click', createTime)
+madder.addEventListener('click', createTime)
+
 
