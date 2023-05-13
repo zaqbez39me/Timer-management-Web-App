@@ -1,60 +1,55 @@
-let lBtn = document.getElementById("lBtn")
-let rBtn = document.getElementById("rBtn")
-let title = document.getElementById("title")
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Register</title>
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+        <header class="header">
+            <div class="wrapper">
+                <div class="header__wrapper" style="padding-top: 116px">
+                    <div class="header__logo">
+                        <a href="3.html" class="header__logo-link">
+                            <img src="./img/svg/countdown-timers.svg" alt="countdown timers">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main class="main">
+            <div class="container">
+                <div class="logreg-box">
+                    <h1 class="logreg" id="title">Register</h1>
+                    <form action="auth/register" method="post">
+                        <div class="input-group">
+                            <div class="input-field" id="nameField">
+                                <input class="ilogreg" type="text" id="name" placeholder="Username" name="username">
+                            </div>
+                            <div class="input-field">
+                                <input class="ilogreg" type="password" id="pass" placeholder="Password" name="password">
+                            </div>
+                            <div class="input-field" id="cPass">
+                                <input class="ilogreg" type="password" id="secPass" placeholder="Confirm Password">
+                            </div>
+                            <div class="error-field1" id="error1">
+                                <p class="errreg" id="diffPass-problem">Different passwords or Username is incorrect</p>
+                            </div>
+                            <div class="error-field1" id="error2">
+                                <p class="errlog" id="incorrect-data">Incorrect name or password</p>
+                            </div>
+                        </div>
+                        <div class="btn-field">
+                            <button type="button" id="rBtn">Register</button>
+                            <button type="button" class="disable" id="lBtn">Login</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    <script src="script_1.js">
 
-let userName = document.querySelector('#name')
-let pass = document.querySelector('#pass')
-let secPass = document.querySelector('#secPass')
-
-let error1 = document.querySelector('#error1')
-let error2 = document.querySelector('#error2')
-
-let cPass = document.getElementById("cPass")
-
-lBtn.onclick = () => {
-    error1.style.maxHeight = "0px"
-    error1.style.border = "0px solid #ff0000"
-    error2.style.maxHeight = "0px"
-    error2.style.border = "0px solid #ff0000"
-    if (cPass.style.maxHeight === "0px") {
-        if (userName.value !== "" && pass.value !== "") {
-            console.log(`{Username : ${userName.value}, Password : ${pass.value} }`)
-            lBtn.setAttribute('type', 'submit')
-        } else {
-            error2.style.maxHeight = "50px"
-            error2.style.border = "1px solid #ff0000"
-        }
-    } else {
-        cPass.style.maxHeight = "0px";
-        cPass.style.border = "0"
-        title.innerHTML = "Login"
-        rBtn.classList.add("disable")
-        lBtn.classList.remove("disable")
-
-        // window.location.href = "3.html";
-    }
-}
-rBtn.onclick = () => {
-    error1.style.maxHeight = "0px"
-    error1.style.border = "0px solid #ff0000"
-    error2.style.maxHeight = "0px"
-    error2.style.border = "0px solid #ff0000"
-    if (cPass.style.maxHeight === "50px") {
-        if (pass.value === secPass.value && userName.value !== "") {
-            error1.style.maxHeight = "0px"
-            error1.style.border = "0px solid #ff0000"
-            console.log(`{New Username : ${userName.value}, New Password : ${pass.value}}`)
-            rBtn.setAttribute('type','submit')
-        } else {
-            error1.style.maxHeight = "50px"
-            error1.style.border = "1px solid #ff0000"
-        }
-    } else {
-        cPass.style.maxHeight = "50px"
-        cPass.style.border = "1px solid #E8E8E8"
-        title.innerHTML = "Register"
-        rBtn.classList.remove("disable")
-        lBtn.classList.add("disable")
-    }
-}
-rBtn.onclick(undefined)
+    </script>
+    </body>
+</html>
