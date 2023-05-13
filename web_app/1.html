@@ -22,13 +22,13 @@
             <div class="container">
                 <div class="logreg-box">
                     <h1 class="logreg" id="title">Register</h1>
-                    <form>
+                    <form action="auth/register" method="post">
                         <div class="input-group">
                             <div class="input-field" id="nameField">
-                                <input class="ilogreg" type="text" id="name" placeholder="Username">
+                                <input class="ilogreg" type="text" id="name" placeholder="Username" name="username">
                             </div>
                             <div class="input-field">
-                                <input class="ilogreg" type="password" id="pass" placeholder="Password">
+                                <input class="ilogreg" type="password" id="pass" placeholder="Password" name="password">
                             </div>
                             <div class="input-field" id="cPass">
                                 <input class="ilogreg" type="password" id="secPass" placeholder="Confirm Password">
