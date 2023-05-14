@@ -49,7 +49,7 @@ services:
     ports:
       - ${CUSTOM_DB_EXTERNAL_PORT:-5000}:80
     healthcheck:
-      test: ["CMD", "curl", "-f", "-G", "--data-urlencode", "query=someInvalidQuery", "http://localhost:80/Query"]
+      test: ["CMD", "curl", "-f", "-G", "--data-urlencode", "", "http://localhost:80/HealthCheck"]
       interval: 5s
       timeout: 1s
       retries: 5
