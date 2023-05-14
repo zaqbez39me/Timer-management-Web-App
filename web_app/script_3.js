@@ -15,14 +15,15 @@ function timeMe() {
     day = hour * 24
 
     function updateDom(f0rm, timerElements, inputValue) {
+        let now = new Date().getTime()
         timerActive = setInterval(() => {
             console.log(f0rm.nextElementSibling.className)
             if (f0rm.nextElementSibling.className === "timer reset") {
                 f0rm.nextElementSibling.className = "timer play"
                 clearInterval(timerActive)
             } else if (f0rm.nextElementSibling.className === "timer play") {
-                const now = new Date().getTime()
                 const distance = inputValue - now
+                now += 1000
                 // resetTimer +=now
                 console.log(distance)
                 const days = Math.floor(distance / day)
@@ -95,9 +96,10 @@ function timeMe() {
         }
     }
 
-    function die(){
+    function die() {
         this.closest(".timer-container").remove()
     }
+
     forms[0].addEventListener("submit", updateCountdown)
     forms[0].querySelectorAll(".timer-button")[1].addEventListener("click", die)
     forms[1].querySelectorAll(".timer-button")[1].addEventListener('click', reset)
