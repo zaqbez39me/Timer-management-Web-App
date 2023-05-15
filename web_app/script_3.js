@@ -45,18 +45,19 @@ function timeMe() {
     }
 
     function updateCountdown(e) {
-        e.preventDefault()
-        let timerTitle = this.nextElementSibling.querySelector(".timer-name")
-        let timerElements = this.nextElementSibling.querySelectorAll("span")
-        let inputTitle = e.target[0].value
-        let inputDate = e.target[1].value
+        f0rm = this.closest(".timer")
+        let timerTitle = f0rm.nextElementSibling.querySelector(".timer-name")
+        let timerElements = f0rm.nextElementSibling.querySelectorAll("span")
+        inputTitle = f0rm.querySelector(".input_name").value
+        let inputDate = f0rm.querySelectorAll(".input-date")[1].value
+        console.log(inputDate)
         if (inputDate === '') {
             alert(`Please select a date for the Timer\nTimer name : "${inputTitle}"`)
         } else {
             let inputValue = new Date(inputDate).getTime()
             timerTitle.textContent = `${inputTitle}`
             isPaused = false
-            updateDom(this, timerElements, inputValue)
+            updateDom(f0rm, timerElements, inputValue)
         }
 
     }
@@ -64,7 +65,6 @@ function timeMe() {
     function reset(e) {
         f1rm = this.closest(".timer")
         f1rm.querySelector("img").setAttribute("src", "./img/svg/pause.svg")
-        e.preventDefault()
         f1rm.previousElementSibling.hidden = false
         f1rm.hidden = true
 
@@ -74,7 +74,6 @@ function timeMe() {
     }
 
     function end(e) {
-        e.preventDefault()
         f1rm = this.closest(".timer")
         f1rm.previousElementSibling.hidden = true
         f1rm.hidden = true
@@ -100,11 +99,13 @@ function timeMe() {
         this.closest(".timer-container").remove()
     }
 
-    forms[0].addEventListener("submit", updateCountdown)
+    forms[0].querySelector(".timer-button").addEventListener("click", updateCountdown)
     forms[0].querySelectorAll(".timer-button")[1].addEventListener("click", die)
+
+    forms[1].querySelector(".timer-button").addEventListener('click', pause)
     forms[1].querySelectorAll(".timer-button")[1].addEventListener('click', reset)
     forms[1].querySelectorAll(".timer-button")[2].addEventListener('click', end)
-    forms[1].querySelector(".timer-button").addEventListener('click', pause)
+
     forms[2].querySelector(".timer-button").addEventListener('click', die)
 
 }
