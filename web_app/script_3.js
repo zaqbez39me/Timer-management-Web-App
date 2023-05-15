@@ -121,3 +121,8 @@ adder.addEventListener('click', createTime)
 madder.addEventListener('click', createTime)
 
 
+let exitBtn = document.querySelector(".header__exit")
+
+exitBtn.onclick() = async () => {
+    
+}
