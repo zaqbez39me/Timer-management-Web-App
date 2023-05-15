@@ -36,7 +36,7 @@
     <div class="timer__wrapper" style="padding-top: 274px">
         <template id="newTimer">
             <div class="timer-container" style="display: inline-block">
-                <form class="timer">
+                <div class="timer">
                     <div class="timer-name">
                         <label>
                             <input type="text" class="input_name" placeholder="New Timer" value="New Timer">
@@ -49,7 +49,7 @@
                     </div>
 
                     <div class="timer-buttons">
-                        <button type="submit" class="timer-button">
+                        <button type="button" class="timer-button">
                             <img src="./img/svg/approve.svg" class="timer-image" alt="approve">
                         </button>
                         <button type="button" class="timer-button">
@@ -57,8 +57,8 @@
                         </button>
                     </div>
 
-                </form>
-                <form class="timer play" hidden>
+                </div>
+                <div class="timer play" hidden>
                     <p class="input_name, timer-name"></p>
                     <div class="timer-time">
                         <ul class="dig-time">
@@ -69,15 +69,15 @@
                         <button type="button" class="timer-button">
                             <img src="./img/svg/pause.svg" class="timer-image" alt="pause">
                         </button>
-                        <button type="submit" class="timer-button">
+                        <button type="button" class="timer-button">
                             <img src="./img/svg/reset.svg" class="timer-image" alt="reset">
                         </button>
-                        <button type="submit" class="timer-button">
+                        <button type="button" class="timer-button">
                             <img src="./img/svg/trash.svg" class="timer-image" alt="trash">
                         </button>
                     </div>
-                </form>
-                <form class="timer" hidden>
+                </div>
+                <div class="timer" hidden>
                     <p class="input_name, timer-name">Title</p>
                     <div class="timer-time">
                         <ul class="finish-time">
@@ -89,7 +89,7 @@
                             <img src="./img/svg/approve.svg" class="timer-image" alt="approve">
                         </button>
                     </div>
-                </form>
+                </div>
             </div>
         </template>
         <div class="timer" id = "add-bottom">
