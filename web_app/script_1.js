@@ -81,7 +81,8 @@ async function register(username, password) {
     if (response.ok == true) {
         const answer = await response.json();
         console.log(answer);
-        window.location.assign('/3.html')
+        // Register doesn't provide access token
+        window.location.assign('/1.html')
     } else{
         // TODO: error handling
     }
@@ -101,8 +102,12 @@ async function login(username, password) {
     if (response.ok == true) {
         const answer = await response.json();
         console.log(answer);
+        localStorage.setItem('access_token', answer['access_token']);
+        localStorage.setItem('refresh_token', answer['refresh_token']);
+        localStorage.setItem('token_type', answer['token_type']);
         window.location.assign('/3.html')
     } else{
         // TODO: error handling
     }
 }
+

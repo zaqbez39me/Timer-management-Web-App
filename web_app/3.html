@@ -32,7 +32,7 @@
         </div>
     </div>
 </header>
-<main class="main">
+<main class="main" onload="redirect_if_not_logged()">
     <div class="timer__wrapper" style="padding-top: 274px">
         <template id="newTimer">
             <div class="timer-container" style="display: inline-block">
@@ -100,6 +100,7 @@
 
     </div>
 </main>
+<script src="login_check.js"></script>
 <script src="script_3.js"></script>
 </body>
 </html>
