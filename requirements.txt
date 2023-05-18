@@ -15,3 +15,6 @@ pytz
 python-dotenv
 aioredis
 python-dotenv
+pytest-cov
+pytest
+pytest-asyncio
