@@ -4,6 +4,69 @@ minute = sec * 60
 hour = minute * 60
 day = hour * 24
 
+
+async function getServerTime() {
+    token = sessionStorage.getItem('access_token')
+    const response = await fetch(`${baseUrl}/time_sync/`, {
+        method: "GET",
+        credentials: "include",
+        headers: { "Accept": "application/json", "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+    })
+    if (!response.ok) {
+        window.location.assign('/1.html')
+    }
+    responseJson = response.json()
+    console.log(responseJson["server_time"])
+    return new Date(responseJson["server_time"])
+}
+
+async function fetchAllTimers() {
+    token = sessionStorage.getItem('access_token')
+    const response = await fetch(`${baseUrl}/timers/`, {
+        method: "GET",
+        credentials: "include",
+        headers: { "Accept": "application/json", "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+    })
+    if (!response.ok) {
+        window.location.assign('/1.html')
+    }
+    responseJson = response.json()
+    console.log(responseJson)
+    return responseJson
+}
+
+function ChristianAlgorithm(serverTime, requestTime, responseTime) {
+    processDelayLatency = responseTime - requestTime
+    clientTime = serverTime + Math.floor(processDelayLatency / 2)
+    return clientTime
+}
+
+// Use this function
+// Returns list of jsons and syncronizes time with servers
+// {
+//     "name": "New12 Timer",
+//     "start_time": "2023-05-19 20:07:32.388752",
+//     "duration_seconds": 13947,
+//     "time_left": 13947,
+//     "active": false
+// },
+async function getAllTimers() {
+    requestTime = Math.floor(Date.now() / 1000)
+    serverTime = await getServerTime()
+    responseTime = Math.floor(Date.now() / 1000)
+    timers = await fetchAllTimers()
+    clientTime = ChristianAlgorithm(serverTime, requestTime, responseTime)
+    actualTime = Date.now()
+    timeError = actualTime - clientTime
+    // Date.setTime(clientTime)
+    for (let i = 0; i < timers.length; ++i) {
+        timers["time_left"] = Math.floor((Date.now() + timeError) / 1000) - timers["time_left"]
+    }
+    console.log("timers")
+    console.log(timers)
+    return timers
+}
+
 // add Timer
 async function addTimer(timerName, durationInSeconds) {
     token = sessionStorage.getItem('access_token')
@@ -19,6 +82,9 @@ async function addTimer(timerName, durationInSeconds) {
         headers: { "Accept": "application/json", "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: body
     })
+    if (!response.ok) {
+        window.location.assign('/1.html')
+    }
     responseJson = response.json()
     console.log(responseJson);
 }
@@ -33,6 +99,9 @@ async function stopTimer(timerName) {
             "name": timerName
         })
     })
+    if (!response.ok) {
+        window.location.assign('/1.html')
+    }
     responseJson = response.json()
     console.log(responseJson);
 
@@ -47,6 +116,9 @@ async function resumeTimer(timerName) {
             "name": timerName
         })
     })
+    if (!response.ok) {
+        window.location.assign('/1.html')
+    }
     responseJson = response.json()
     console.log(responseJson);
 
@@ -61,6 +133,9 @@ async function resetTimer(timerName, durationInSeconds) {
             "name": timerName
         })
     })
+    if (!response.ok) {
+        window.location.assign('/1.html')
+    }
     responseJson = response.json()
     console.log(responseJson);
 
@@ -75,9 +150,13 @@ async function removeTimer(timerName) {
             "name": timerName
         })
     })
-    if (response.ok){
-    responseJson = response.json()
-    console.log(responseJson);}
+    if (!response.ok) {
+        window.location.assign('/1.html')
+    }
+    if (response.ok) {
+        responseJson = response.json()
+        console.log(responseJson);
+    }
 }
 
 async function timeMe() { // Функция добавляет таймеру слушателей событий для кнопок
@@ -102,7 +181,7 @@ async function timeMe() { // Функция добавляет таймеру с
         timerActive = setInterval(async () => {
             if (f0rm.nextElementSibling.className === "timer reset") {
                 f0rm.nextElementSibling.className = "timer play"
-               
+
                 clearInterval(timerActive)
             } else if (f0rm.nextElementSibling.className === "timer play") {
                 f0rm.hidden = true
@@ -145,7 +224,7 @@ async function timeMe() { // Функция добавляет таймеру с
             timerTitle.textContent = `${inputTitle}`
             finishTimerTitle.textContent = `${inputTitle}`
             isPaused = false
-            updateDom(f0rm, timerElements, inputValue*1000, inputTitle)
+            updateDom(f0rm, timerElements, inputValue * 1000, inputTitle)
         }
 
     }
@@ -218,3 +297,5 @@ adder.addEventListener('click', createTime)
 madder.addEventListener('click', createTime)
 
 let exitBtn = document.querySelector(".header__exit")
+
+document.addEventListener('DOMContentLoaded', getAllTimers(), false);
