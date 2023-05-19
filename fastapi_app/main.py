@@ -3,6 +3,7 @@ import http
 from fastapi import FastAPI
 from starlette.requests import Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from .api.views import auth, time_sync, timers, token, front_end
 from .database import db_engine
@@ -19,6 +20,7 @@ def get_application() -> FastAPI:
 
 
 app = get_application()
+app.mount("/", StaticFiles(directory="./web_app"), name="web_app")
 
 
 @app.on_event("startup")

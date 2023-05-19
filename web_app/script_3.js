@@ -1,8 +1,83 @@
+
 sec = 1000
 minute = sec * 60
 hour = minute * 60
 day = hour * 24
 
+// add Timer
+async function addTimer(timerName, durationInSeconds) {
+    token = sessionStorage.getItem('access_token')
+    console.log(token)
+    body = JSON.stringify({
+        "name": timerName,
+        "duration_seconds": durationInSeconds
+    })
+    console.log(body)
+    const response = await fetch(`${baseUrl}/timers/add`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Accept": "application/json", "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+        body: body
+    })
+    responseJson = response.json()
+    console.log(responseJson);
+}
+
+async function stopTimer(timerName) {
+    token = sessionStorage.getItem('access_token')
+    const response = await fetch(`${baseUrl}/timers/stop`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Accept": "application/json", "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+        body: JSON.stringify({
+            "name": timerName
+        })
+    })
+    responseJson = response.json()
+    console.log(responseJson);
+
+}
+async function resumeTimer(timerName) {
+    token = sessionStorage.getItem('access_token')
+    const response = await fetch(`${baseUrl}/timers/resume`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Accept": "application/json", "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+        body: JSON.stringify({
+            "name": timerName
+        })
+    })
+    responseJson = response.json()
+    console.log(responseJson);
+
+}
+async function resetTimer(timerName, durationInSeconds) {
+    token = sessionStorage.getItem('access_token')
+    const response = await fetch(`${baseUrl}/timers/reset`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Accept": "application/json", "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+        body: JSON.stringify({
+            "name": timerName
+        })
+    })
+    responseJson = response.json()
+    console.log(responseJson);
+
+}
+async function removeTimer(timerName) {
+    token = sessionStorage.getItem('access_token')
+    const response = await fetch(`${baseUrl}/timers/remove`, {
+        method: "DELETE",
+        credentials: "include",
+        headers: { "Accept": "application/json", "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+        body: JSON.stringify({
+            "name": timerName
+        })
+    })
+    responseJson = response.json()
+    console.log(responseJson);
+}
 
 function timeMe() { // Функция добавляет таймеру слушателей событий для кнопок
 

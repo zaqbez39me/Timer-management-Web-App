@@ -43,7 +43,7 @@ async function redirect_if_not_logged() {
     if (!(await login_check())) {
         // On fixing CORS uncomment the line after this line
 
-        // window.location.assign('/1.html')
+        window.location.assign('/1.html')
     }
 }
 // Add this file as script for every html file that has to be checked for login

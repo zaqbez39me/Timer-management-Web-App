@@ -129,7 +129,7 @@ async function login(username, password) {
         console.log(sessionStorage.getItem('access_token'))
         console.log(sessionStorage.getItem('refresh_token'))
         console.log(sessionStorage.getItem('token_type'))
-        // window.location.assign('/3.html')
+        window.location.assign('/3.html')
         return true
     } else{
         // TODO: error handling
