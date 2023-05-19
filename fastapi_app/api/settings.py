@@ -16,7 +16,7 @@ REFRESH_TOKEN_DELTA = timedelta(days=3)
 class PostgresSettings(BaseSettings):
     pg_username: str = Field(default="postgres", env="PG_USERNAME")
     pg_password: str = Field(default="password", env="PG_PASSWORD")
-    pg_ip: str = Field(default="pg", env="PG_IP")
+    pg_ip: str = Field(default="localhost", env="PG_IP")
     pg_name: str = Field(default="postgres", env="PG_NAME")
     pg_port: str = Field("5432", env="PG_PORT")
     pg_database_uri: Optional[PostgresDsn] = None
@@ -36,6 +36,33 @@ class PostgresSettings(BaseSettings):
 
     class Config:
         env_prefix = "PG_"
+        env_file_encoding = "utf-8"
+
+
+# Postgres TestSettings
+class PostgresTestSettings(BaseSettings):
+    pg_username: str = Field(default="postgres", env="PG_TEST_USERNAME")
+    pg_password: str = Field(default="password", env="PG_TEST_PASSWORD")
+    pg_ip: str = Field(default="localhost", env="PG_TEST_IP")
+    pg_name: str = Field(default="postgres", env="PG_TEST_NAME")
+    pg_port: str = Field("5432", env="PG_TEST_PORT")
+    pg_database_uri: Optional[PostgresDsn] = None
+
+    @validator("pg_database_uri", pre=True)
+    def assemble_db_connection(cls, v: Optional[str], values: dict[str, any]) -> any:
+        if isinstance(v, str):
+            return v
+        return PostgresDsn.build(
+            scheme="postgresql+asyncpg",
+            user=values.get("pg_username"),
+            password=values.get("pg_password"),
+            host=values.get("pg_ip"),
+            port=values.get("pg_port"),
+            path=f"/{values.get('pg_name') or ''}",
+        )
+
+    class Config:
+        env_prefix = "TEST_PG_"
         env_file_encoding = "utf-8"
 
 
@@ -88,6 +115,6 @@ custom_db_settings = CustomDbSettings()
 redis_settings = RedisSettings()
 secret_settings = SecretSettings()
 pg_settings = PostgresSettings()
-
+pg_test_settings = PostgresTestSettings()
 
 settings = Settings()

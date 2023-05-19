@@ -16,5 +16,5 @@ python-dotenv
 aioredis
 python-dotenv
 pytest-cov
-pytest
-pytest-asyncio
+pytest==7.2.1
+pytest-asyncio==0.20.3

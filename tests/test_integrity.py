@@ -1,25 +1,20 @@
 import pytest
-from fastapi.testclient import TestClient
+from httpx import AsyncClient
 
-from fastapi_app.database.models.user import UserDB
-from fastapi_app.database.utils import delete_by_model_value
-
-from fastapi_app.main import app
+from tests.conftest import async_client, session_maker
 
 
-@pytest.mark.asyncio
-async def test_register_endpoint(db):
+async def test_register_endpoint(async_client: AsyncClient):
     # Test case 1: Successful registration
     payload = {"username": "testuser", "password": "testpassword"}
-    with TestClient(app) as client:
-        response = client.post("/auth/register", data=payload)
+    response = await async_client.post("/auth/register", data=payload)
     assert response.status_code == 201
     assert "User Created Successfully" in response.json()["message"]
 
+
+async def test_register_user_already_exists(async_client: AsyncClient):
     # Test case 2: Username already exists
     payload = {"username": "testuser", "password": "testpassword"}
-    with TestClient(app) as client:
-        response = client.post("/auth/register", data=payload)
+    response = await async_client.post("/auth/register", data=payload)
     assert response.status_code == 409
     assert "Username already in use." in response.json()["detail"]
-    await delete_by_model_value(await db, UserDB, UserDB.username, "testuser", commit=True)
