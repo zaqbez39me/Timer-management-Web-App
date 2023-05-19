@@ -16,6 +16,8 @@ jobs:
         python-version: ${{ matrix.python-version }}
 #    - name: Set up submodules
 #      run:
+    - name: Setup dotenv
+      run: pip install python-dotenv
     - name: Generate secrets
       run: python3 env/gen_secrets.py
     - name: Create empty .env files
