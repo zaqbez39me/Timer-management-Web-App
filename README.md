@@ -33,6 +33,8 @@ obliged to set them all.
 
 `source <(python3 env/set_env.py)`
 
+### Make sure that you have installed docker and docker compose
+
 ### Build and run docker containers
 
 * To build and run docker containers just use single command:
