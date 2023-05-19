@@ -4,6 +4,21 @@ minute = sec * 60
 hour = minute * 60
 day = hour * 24
 
+function refresh(timers){
+    for (let timer in timers){
+        let obj = JSON.parse(timer)
+        document.querySelector(".header__add").click()
+        containers = document.getElementsByClassName("timer-container")
+        forms = containers[containers.length - 1].getElementsByClassName("timer")
+        forms[0].querySelector(".input_name").value = obj["name"]
+        forms[0].querySelectorAll(".input-date")[1].value=`${Math.floor(obj["left"]/60/60)}:${Math.floor(obj["left"]/60)}:${obj["left"]%60}`
+        forms[0].querySelector(".timer-button").click()
+        if (!obj["active"]){
+            forms[1].querySelector(".timer-button").click()
+        }
+    }
+}
+
 // add Timer
 async function addTimer(timerName, durationInSeconds) {
     token = sessionStorage.getItem('access_token')
