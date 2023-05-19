@@ -93,29 +93,38 @@ function timeMe() { // Функция добавляет таймеру слуш
 
     async function updateDom(f0rm, timerElements, inputValue, timerTitle) {
         let now = new Date().getTime()
-        console.log(Math.floor((inputValue - now) / sec), timerTitle)
-        await addTimer(timerTitle, Math.floor((inputValue - now) / sec))
-        timerActive = setInterval(() => {
+        let nowTime = 0
+        console.log(Math.floor((inputValue - nowTime) / sec), timerTitle)
+        await addTimer(timerTitle, Math.floor((inputValue - nowTime) / sec))
+        timerActive = setInterval(async () => {
             if (f0rm.nextElementSibling.className === "timer reset") {
                 f0rm.nextElementSibling.className = "timer play"
+                f0rm.hidden = true
+                f0rm.nextElementSibling.hidden = true
                 clearInterval(timerActive)
             } else if (f0rm.nextElementSibling.className === "timer play") {
-                const distance = inputValue - now
-                now += sec
+                f0rm.hidden = true
+                f0rm.nextElementSibling.hidden = false
+                const distance = inputValue - nowTime
+                nowTime += sec
                 const days = Math.floor(distance / day)
                 const hours = Math.floor((distance % day) / hour)
                 const minutes = Math.floor((distance % hour) / minute)
                 const seconds = Math.floor((distance % minute) / sec)
                 // console.log(days, hours, minutes, seconds)
                 if (distance < 0) {
-                    end()
+                    f1rm = f0rm.nextElementSibling
+                    await resetTimer(f1rm.querySelector(".timer-name").textContent)
+                    f1rm.previousElementSibling.hidden = true
+                    f1rm.hidden = true
+                    f1rm.nextElementSibling.hidden = false
+                    f1rm.className = "timer reset"
                 }
                 timerElements[0].textContent = `${days}`
                 timerElements[1].textContent = `${hours}`
                 timerElements[2].textContent = `${minutes}`
                 timerElements[3].textContent = `${seconds}`
-                f0rm.hidden = true
-                f0rm.nextElementSibling.hidden = false
+
             }
         }, sec)
     }
@@ -130,11 +139,12 @@ function timeMe() { // Функция добавляет таймеру слуш
         if (inputDate === '') {
             alert(`Please select a date for the Timer\nTimer name : "${inputTitle}"`)
         } else {
-            let inputValue = new Date(inputDate).getTime()
+            var a = inputDate.split(':'); // split it at the colons
+            var inputValue = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
             timerTitle.textContent = `${inputTitle}`
             finishTimerTitle.textContent = `${inputTitle}`
             isPaused = false
-            updateDom(f0rm, timerElements, inputValue, inputTitle)
+            updateDom(f0rm, timerElements, inputValue*1000, inputTitle)
         }
 
     }
