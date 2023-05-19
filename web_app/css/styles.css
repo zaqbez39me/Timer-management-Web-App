@@ -752,6 +752,11 @@ body {
     font-family: 'Inter', sans-serif;
     text-transform: uppercase;
 }
+
+input[type=time]::-webkit-datetime-edit-ampm-field {
+  display: none;
+} 
+
 .dig-time {
     margin: auto;
     padding-bottom: 100px;
