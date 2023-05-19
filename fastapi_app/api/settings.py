@@ -16,7 +16,7 @@ REFRESH_TOKEN_DELTA = timedelta(days=3)
 class PostgresSettings(BaseSettings):
     pg_username: str = Field(default="postgres", env="PG_USERNAME")
     pg_password: str = Field(default="password", env="PG_PASSWORD")
-    pg_ip: str = Field(default="localhost", env="PG_IP")
+    pg_ip: str = Field(default="pg", env="PG_IP")
     pg_name: str = Field(default="postgres", env="PG_NAME")
     pg_port: str = Field("5432", env="PG_PORT")
     pg_database_uri: Optional[PostgresDsn] = None
@@ -43,9 +43,9 @@ class PostgresSettings(BaseSettings):
 class PostgresTestSettings(BaseSettings):
     pg_username: str = Field(default="postgres", env="PG_TEST_USERNAME")
     pg_password: str = Field(default="password", env="PG_TEST_PASSWORD")
-    pg_ip: str = Field(default="localhost", env="PG_TEST_IP")
+    pg_ip: str = Field(default="pg_test", env="PG_TEST_IP")
     pg_name: str = Field(default="postgres", env="PG_TEST_NAME")
-    pg_port: str = Field("5432", env="PG_TEST_PORT")
+    pg_port: str = Field("6000", env="PG_TEST_PORT")
     pg_database_uri: Optional[PostgresDsn] = None
 
     @validator("pg_database_uri", pre=True)
@@ -69,7 +69,7 @@ class PostgresTestSettings(BaseSettings):
 # Custom-DB can be queried like so:
 # requests.get(custom_db_settings.custom_db_url,params={'query':"create entity Meat {mass: int}"} )
 class CustomDbSettings(BaseSettings):
-    custom_db_ip: str = Field(default="localhost", env="CUSTOM_DB_IP")
+    custom_db_ip: str = Field(default="custom_db", env="CUSTOM_DB_IP")
     custom_db_port: str = Field(default="5000", env="CUSTOM_DB_PORT")
 
     class Config:
@@ -84,7 +84,7 @@ class CustomDbSettings(BaseSettings):
 
 
 class RedisSettings(BaseSettings):
-    redis_host: str = Field(default="localhost", env="REDIS_HOST")
+    redis_host: str = Field(default="cache", env="REDIS_HOST")
     redis_port: int = Field(default=6379, env="REDIS_PORT")
 
     class Config:

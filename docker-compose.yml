@@ -85,6 +85,31 @@ services:
     networks:
       - timer
 
+  pg_test:
+    container_name: ${PG_TEST_IP:-pg_test}
+    image: postgres:15.2-alpine
+    deploy:
+      resources:
+        limits:
+          memory: 200M
+    restart: always
+    env_file:
+      - env/test.env
+    environment:
+      POSTGRES_DB: ${PG_TEST_NAME:-postgres}
+      POSTGRES_USER: ${PG_TEST_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${PG_TEST_PASSWORD:-password}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready --port=${PG_TEST_PORT:-6000} -U ${PG_TEST_USERNAME:-postgres}" ]
+      interval: 5s
+      timeout: 1s
+      retries: 5
+    ports:
+      - ${PG_TEST_PORT:-6000}:${PG_TEST_PORT:-6000}
+    command: -p ${PG_TEST_PORT:-6000}
+    networks:
+      - timer
+
   cache:
     container_name: ${REDIS_HOST:-cache}
     image: redis:6.2-alpine
