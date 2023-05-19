@@ -298,4 +298,4 @@ madder.addEventListener('click', createTime)
 
 let exitBtn = document.querySelector(".header__exit")
 
-document.addEventListener('DOMContentLoaded', getAllTimers(), false);
+// document.addEventListener('DOMContentLoaded', getAllTimers(), false);
