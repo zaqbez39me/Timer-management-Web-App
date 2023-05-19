@@ -99,8 +99,7 @@ function timeMe() { // Функция добавляет таймеру слуш
         timerActive = setInterval(async () => {
             if (f0rm.nextElementSibling.className === "timer reset") {
                 f0rm.nextElementSibling.className = "timer play"
-                f0rm.hidden = true
-                f0rm.nextElementSibling.hidden = true
+               
                 clearInterval(timerActive)
             } else if (f0rm.nextElementSibling.className === "timer play") {
                 f0rm.hidden = true
