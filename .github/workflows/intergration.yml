@@ -23,6 +23,8 @@ jobs:
     - name: Create empty .env files
       run: touch env/pg.env && touch env/redis.env && touch env/fastapi.env && touch env/custom_db.env
     - name: Source secrets
+      run: (python3 env/set_env.py) > .env
+    - name: Unifying secrets
       run: source <(python3 env/set_env.py)
     - name: Build and deploy main stack
       run: docker-compose build && docker-compose up -d
