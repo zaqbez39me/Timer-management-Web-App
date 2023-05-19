@@ -77,6 +77,7 @@ async function register(username, password) {
     try {
     const response = await fetch(`${baseUrl}/auth/register`, {
         method: "POST",
+        credentials: "include",
         headers: { "Accept": "application/json" },
         body: formData,
     });
@@ -105,21 +106,28 @@ async function login(username, password) {
     formData.append('password', password);
     const response = await fetch(`${baseUrl}/auth/login`, {
         method: "POST",
+        credentials: "include",
         headers: { "Accept": "application/json" },
         body: formData,
     });
+    console.log('Cookie');
+    console.log(response.headers);
+    console.log(response.headers['set-cookie'])
+    console.log(response.headers.get('set-cookie')); // undefined 
+    console.log(document.cookie); // nope 
+
     console.log(`Sent login request. Response status: ${response.ok}`)
     if (response.ok) {
         console.log('authorized')
         const answer = await response.json();
         console.log(answer);
-        localStorage.setItem('access_token', answer['access_token']);
-        localStorage.setItem('refresh_token', answer['refresh_token']);
-        localStorage.setItem('token_type', answer['token_type']);
-        console.log(localStorage.getItem('access_token'))
-        console.log(localStorage.getItem('refresh_token'))
-        console.log(localStorage.getItem('token_type'))
-        window.location.assign('/3.html')
+        sessionStorage.setItem('access_token', answer['access_token']);
+        sessionStorage.setItem('refresh_token', answer['refresh_token']);
+        sessionStorage.setItem('token_type', answer['token_type']);
+        console.log(sessionStorage.getItem('access_token'))
+        console.log(sessionStorage.getItem('refresh_token'))
+        console.log(sessionStorage.getItem('token_type'))
+        // window.location.assign('/3.html')
         return true
     } else{
         // TODO: error handling

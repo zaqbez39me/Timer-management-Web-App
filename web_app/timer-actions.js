@@ -6,6 +6,7 @@ const baseUrl = `http://${BACK_IP}:${BACK_PORT}`
 async function addTimer(timerName, durationInSeconds) {
     const response = await fetch("{{baseUrl}}/timers/add", {
         method: "POST",
+        credentials: "include",
         headers: { "Accept": "application/json", "Content-Type": "application/json" },
         body: JSON.stringify({
             name: timerName,
@@ -19,6 +20,7 @@ async function addTimer(timerName, durationInSeconds) {
 async function stopTimer(timerName) {
     const response = await fetch("{{baseUrl}}/timers/stop", {
         method: "POST",
+        credentials: "include",
         headers: { "Accept": "application/json", "Content-Type": "application/json" },
         body: JSON.stringify({
             name: timerName
@@ -31,6 +33,7 @@ async function stopTimer(timerName) {
 async function resumeTimer(timerName) {
     const response = await fetch("{{baseUrl}}/timers/resume", {
         method: "POST",
+        credentials: "include",
         headers: { "Accept": "application/json", "Content-Type": "application/json" },
         body: JSON.stringify({
             name: timerName
@@ -43,6 +46,7 @@ async function resumeTimer(timerName) {
 async function resetTimer(timerName, durationInSeconds) {
     const response = await fetch("{{baseUrl}}/timers/reset", {
         method: "POST",
+        credentials: "include",
         headers: { "Accept": "application/json", "Content-Type": "application/json" },
         body: JSON.stringify({
             name: timerName
@@ -55,6 +59,7 @@ async function resetTimer(timerName, durationInSeconds) {
 async function removeTimer(timerName) {
     const response = await fetch("{{baseUrl}}/timers/remove", {
         method: "DELETE",
+        credentials: "include",
         headers: { "Accept": "application/json", "Content-Type": "application/json" },
         body: JSON.stringify({
             name: timerName
