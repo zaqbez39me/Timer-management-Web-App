@@ -89,4 +89,5 @@ redis_settings = RedisSettings()
 secret_settings = SecretSettings()
 pg_settings = PostgresSettings()
 
+
 settings = Settings()

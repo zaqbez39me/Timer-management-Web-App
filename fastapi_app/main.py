@@ -5,6 +5,8 @@ from starlette.requests import Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
+from .api.views import auth, time_sync, timers, token
+from .custom_database.models import CustomBaseModel
 from .api.views import auth, time_sync, timers, token, front_end
 from .database import db_engine
 
@@ -31,6 +33,7 @@ async def startup():
     """
     # create db tables
     await db_engine.start()
+    await CustomBaseModel.create_all()
 
 
 @app.on_event("shutdown")

@@ -6,7 +6,8 @@ from fastapi_app.database.utils import get_by_model_value
 
 async def session_validate(pg, session_id):
     if session_id:
-        if await redis_client.get_async(name=f"session:{session_id}", model=SessionUser):
+        redis = await redis_client.get_async(name=f"session:{session_id}", model=SessionUser)
+        if redis:
             return True
         session_db = await get_by_model_value(
             pg, SessionDB, SessionDB.session_id, session_id
@@ -17,4 +18,5 @@ async def session_validate(pg, session_id):
                 value=SessionUser(user_id=session_db.user_id),
             )
             return True
+
     return False
