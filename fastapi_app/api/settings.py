@@ -39,33 +39,6 @@ class PostgresSettings(BaseSettings):
         env_file_encoding = "utf-8"
 
 
-# Postgres TestSettings
-class PostgresTestSettings(BaseSettings):
-    pg_username: str = Field(default="postgres", env="PG_TEST_USERNAME")
-    pg_password: str = Field(default="password", env="PG_TEST_PASSWORD")
-    pg_ip: str = Field(default="pg_test", env="PG_TEST_IP")
-    pg_name: str = Field(default="postgres", env="PG_TEST_NAME")
-    pg_port: str = Field("6000", env="PG_TEST_PORT")
-    pg_database_uri: Optional[PostgresDsn] = None
-
-    @validator("pg_database_uri", pre=True)
-    def assemble_db_connection(cls, v: Optional[str], values: dict[str, any]) -> any:
-        if isinstance(v, str):
-            return v
-        return PostgresDsn.build(
-            scheme="postgresql+asyncpg",
-            user=values.get("pg_username"),
-            password=values.get("pg_password"),
-            host=values.get("pg_ip"),
-            port=values.get("pg_port"),
-            path=f"/{values.get('pg_name') or ''}",
-        )
-
-    class Config:
-        env_prefix = "TEST_PG_"
-        env_file_encoding = "utf-8"
-
-
 # Custom-DB can be queried like so:
 # requests.get(custom_db_settings.custom_db_url,params={'query':"create entity Meat {mass: int}"} )
 class CustomDbSettings(BaseSettings):
@@ -115,6 +88,5 @@ custom_db_settings = CustomDbSettings()
 redis_settings = RedisSettings()
 secret_settings = SecretSettings()
 pg_settings = PostgresSettings()
-pg_test_settings = PostgresTestSettings()
 
 settings = Settings()

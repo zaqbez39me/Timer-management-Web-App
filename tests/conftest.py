@@ -6,14 +6,14 @@ from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from starlette.testclient import TestClient
 
-from fastapi_app.api.settings import pg_test_settings
+from fastapi_app.api.settings import pg_settings
 from fastapi_app.cache import redis_client
 from fastapi_app.custom_database.utils import get_custom_db_worker, CustomDBWorker, get_connection
 from fastapi_app.database import db_engine
 from fastapi_app.database.models import Base
 from fastapi_app.main import app
 
-engine = create_async_engine(pg_test_settings.pg_database_uri)
+engine = create_async_engine(pg_settings.pg_database_uri)
 session_maker = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 metadata = Base.metadata
 metadata.bind = engine
