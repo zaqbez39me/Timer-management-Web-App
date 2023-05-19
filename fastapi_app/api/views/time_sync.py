@@ -15,7 +15,7 @@ time_sync_router = APIRouter(tags=["time_sync"], prefix="/time_sync")
 
 
 @time_sync_router.get(
-    "/", status_code=status.HTTP_200_OK, response_model=ServerTimeResponse
+    "", status_code=status.HTTP_200_OK, response_model=ServerTimeResponse
 )
 async def change_password(
     access_token: Annotated[str, Depends(oauth2_scheme)],

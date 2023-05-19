@@ -29,3 +29,6 @@ class RedisClient(Redis):
     ) -> Awaitable:
         dumped = pickle.dumps(value)
         return await super().set(name=name, value=dumped, ex=expiration)
+
+    async def clear_db(self):
+        await self.delete(*(await self.keys('*')))

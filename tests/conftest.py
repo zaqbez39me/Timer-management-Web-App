@@ -7,6 +7,7 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sess
 from starlette.testclient import TestClient
 
 from fastapi_app.api.settings import pg_test_settings
+from fastapi_app.cache import redis_client
 from fastapi_app.custom_database.utils import get_custom_db_worker, CustomDBWorker, get_connection
 from fastapi_app.database import db_engine
 from fastapi_app.database.models import Base
@@ -35,6 +36,7 @@ async def prepare_db():
     # Clear the database after testing
     async with engine.begin() as conn:
         await conn.run_sync(metadata.drop_all)
+    await redis_client.clear_db()
 
 
 @pytest.fixture(scope="session")
