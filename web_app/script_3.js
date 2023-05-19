@@ -2,7 +2,7 @@ sec = 1000
 minute = sec * 60
 hour = minute * 60
 day = hour * 24
-
+// hi
 
 function timeMe() { // Функция добавляет таймеру слушателей событий для кнопок
 
