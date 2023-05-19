@@ -1,0 +1,18 @@
+FROM python:3.10-alpine3.17 as builder
+
+RUN python3 -m venv /tests
+RUN /tests/bin/pip install -U pip
+
+COPY requirements.txt /mnt/
+RUN apk add --no-cache postgresql-dev gcc python3-dev musl-dev libffi-dev
+RUN /tests/bin/pip install -Ur /mnt/requirements.txt --no-cache-dir --prefer-binary
+
+
+FROM python:3.10-alpine3.17 as tests
+
+WORKDIR /tests
+
+COPY --from=builder /tests /tests
+COPY . ./src
+
+EXPOSE 8000

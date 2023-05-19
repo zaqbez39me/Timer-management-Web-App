@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  tests:
+    container_name: tests
+    env_file:
+      - ../env/pg.env
+      - ../env/secrets.env
+      - ../env/redis.env
+    environment:
+      PG_USERNAME: ${PG_USERNAME:-postgres}
+      PG_PASSWORD: ${PG_PASSWORD:-password}
+      PG_IP: ${PG_IP:-pg}
+      PG_PORT: ${PG_PORT:-5432}
+      PG_NAME: ${PG_NAME:-postgres}
+      REDIS_HOST: ${REDIS_HOST:-cache}
+      REDIS_PORT: ${REDIS_PORT:-6379}
+      CUSTOM_DB_IP: ${CUSTOM_DB_IP:-custom_db}
+      CUSTOM_DB_PORT: 80
+    build:
+      context: ..
+      dockerfile: Dockerfile-tests
+    networks:
+      - timer
+
+networks:
+  timer:
+    external: true
+

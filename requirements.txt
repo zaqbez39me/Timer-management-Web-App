@@ -13,7 +13,7 @@ python-multipart
 bcrypt
 pytz
 python-dotenv
-aioredis
+redis
 python-dotenv
 pytest-cov
 pytest
