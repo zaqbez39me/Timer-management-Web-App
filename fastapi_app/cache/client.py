@@ -2,8 +2,8 @@ import pickle
 from datetime import timedelta
 from typing import Any, Awaitable, Type, Union
 
-from aioredis.client import KeyT, Redis
-from aioredis.connection import EncodableT
+from redis.typing import KeyT, EncodableT
+from redis.asyncio.client import Redis
 from pydantic import BaseModel
 
 
@@ -29,3 +29,6 @@ class RedisClient(Redis):
     ) -> Awaitable:
         dumped = pickle.dumps(value)
         return await super().set(name=name, value=dumped, ex=expiration)
+
+    async def clear_db(self):
+        await self.delete(*(await self.keys('*')))

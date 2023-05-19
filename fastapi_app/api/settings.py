@@ -43,7 +43,7 @@ class PostgresSettings(BaseSettings):
 # requests.get(custom_db_settings.custom_db_url,params={'query':"create entity Meat {mass: int}"} )
 class CustomDbSettings(BaseSettings):
     custom_db_ip: str = Field(default="custom_db", env="CUSTOM_DB_IP")
-    custom_db_port: str = Field(default="80", env="CUSTOM_DB_PORT")
+    custom_db_port: str = Field(default="5000", env="CUSTOM_DB_PORT")
 
     class Config:
         env_prefix = "CUSTOM_DB_"
@@ -57,7 +57,7 @@ class CustomDbSettings(BaseSettings):
 
 
 class RedisSettings(BaseSettings):
-    redis_host: str = Field(default="localhost", env="REDIS_HOST")
+    redis_host: str = Field(default="cache", env="REDIS_HOST")
     redis_port: int = Field(default=6379, env="REDIS_PORT")
 
     class Config:
@@ -88,6 +88,5 @@ custom_db_settings = CustomDbSettings()
 redis_settings = RedisSettings()
 secret_settings = SecretSettings()
 pg_settings = PostgresSettings()
-
 
 settings = Settings()

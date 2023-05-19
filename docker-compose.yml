@@ -17,7 +17,9 @@ services:
       REDIS_PORT: ${REDIS_PORT:-6379}
       CUSTOM_DB_IP: ${CUSTOM_DB_IP:-custom_db}
       CUSTOM_DB_PORT: 80
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     deploy:
       resources:
         limits:
@@ -101,6 +103,7 @@ services:
 
 networks:
   timer:
+    name: timer
     driver: bridge
 
 volumes:
