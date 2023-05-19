@@ -2,7 +2,7 @@ sec = 1000
 minute = sec * 60
 hour = minute * 60
 day = hour * 24
-// hi
+
 
 function timeMe() { // Функция добавляет таймеру слушателей событий для кнопок
 
@@ -16,23 +16,22 @@ function timeMe() { // Функция добавляет таймеру слуш
     // Интервал
     let timerActive;
 
-    function updateDom(f0rm, timerElements, inputValue) {
+    async function updateDom(f0rm, timerElements, inputValue, timerTitle) {
         let now = new Date().getTime()
+        console.log(Math.floor((inputValue - now) / sec), timerTitle)
+        await addTimer(timerTitle, Math.floor((inputValue - now) / sec))
         timerActive = setInterval(() => {
-            console.log(f0rm.nextElementSibling.className)
             if (f0rm.nextElementSibling.className === "timer reset") {
                 f0rm.nextElementSibling.className = "timer play"
                 clearInterval(timerActive)
             } else if (f0rm.nextElementSibling.className === "timer play") {
                 const distance = inputValue - now
                 now += sec
-                // resetTimer +=now
-                console.log(distance)
                 const days = Math.floor(distance / day)
                 const hours = Math.floor((distance % day) / hour)
                 const minutes = Math.floor((distance % hour) / minute)
                 const seconds = Math.floor((distance % minute) / sec)
-                console.log(days, hours, minutes, seconds)
+                // console.log(days, hours, minutes, seconds)
                 if (distance < 0) {
                     end()
                 }
@@ -49,23 +48,25 @@ function timeMe() { // Функция добавляет таймеру слуш
     function updateCountdown(e) {
         f0rm = this.closest(".timer")
         let timerTitle = f0rm.nextElementSibling.querySelector(".timer-name")
+        let finishTimerTitle = f0rm.nextElementSibling.nextElementSibling.querySelector(".timer-name")
         let timerElements = f0rm.nextElementSibling.querySelectorAll("span")
         inputTitle = f0rm.querySelector(".input_name").value
         let inputDate = f0rm.querySelectorAll(".input-date")[1].value
-        console.log(inputDate)
         if (inputDate === '') {
             alert(`Please select a date for the Timer\nTimer name : "${inputTitle}"`)
         } else {
             let inputValue = new Date(inputDate).getTime()
             timerTitle.textContent = `${inputTitle}`
+            finishTimerTitle.textContent = `${inputTitle}`
             isPaused = false
-            updateDom(f0rm, timerElements, inputValue)
+            updateDom(f0rm, timerElements, inputValue, inputTitle)
         }
 
     }
 
-    function reset(e) {
+    async function reset(e) {
         f1rm = this.closest(".timer")
+        await resetTimer(f1rm.querySelector(".timer-name").textContent)
         f1rm.querySelector("img").setAttribute("src", "./img/svg/pause.svg")
         f1rm.previousElementSibling.hidden = false
         f1rm.hidden = true
@@ -75,23 +76,24 @@ function timeMe() { // Функция добавляет таймеру слуш
 
     }
 
-    function end(e) {
+    async function end(e) {
+        await removeTimer(f1rm.querySelector(".timer-name").textContent)
         f1rm = this.closest(".timer")
         f1rm.previousElementSibling.hidden = true
         f1rm.hidden = true
         f1rm.nextElementSibling.hidden = false
         f1rm.className = "timer reset"
 
-
     }
 
-    function pause() {
+    async function pause() {
         f1rm = this.closest(".timer")
-        console.log(f1rm)
         if (f1rm.classList[1] === "play") {
+            await stopTimer(f1rm.querySelector(".timer-name").textContent)
             f1rm.classList.remove("play")
             f1rm.querySelector("img").setAttribute("src", "./img/svg/play.svg")
         } else {
+            await resumeTimer(f1rm.querySelector(".timer-name").textContent)
             f1rm.classList.add("play")
             f1rm.querySelector("img").setAttribute("src", "./img/svg/pause.svg")
         }
@@ -113,12 +115,10 @@ function timeMe() { // Функция добавляет таймеру слуш
 }
 
 
-
 function createTime() {
     const clone = template.content.cloneNode(true);
     adder.parentNode.insertBefore(clone, adder)
     // Новый таймер был создан
-
     timeMe()
 }
 
@@ -133,6 +133,3 @@ madder.addEventListener('click', createTime)
 
 let exitBtn = document.querySelector(".header__exit")
 
-// exitBtn.onclick() = async () => {
-    
-// }
