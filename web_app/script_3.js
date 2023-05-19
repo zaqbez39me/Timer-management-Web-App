@@ -60,7 +60,11 @@ async function getAllTimers() {
     timeError = actualTime - clientTime
     // Date.setTime(clientTime)
     for (let i = 0; i < timers.length; ++i) {
-        timers["time_left"] = Math.floor((Date.now() + timeError) / 1000) - timers["time_left"]
+        console.log(`Time left: ${timers["time_left"]}`)
+        if (timers["active"]) {
+            timers["time_left"] = Math.floor((Date.now() + timeError) / 1000) - Math.floor(new Date(timers["start_time"]).getTime() / 1000)
+            // console.log(`Time left: ${timers["time_left"]}`)
+        }
     }
     console.log("timers")
     console.log(timers)
@@ -298,4 +302,4 @@ madder.addEventListener('click', createTime)
 
 let exitBtn = document.querySelector(".header__exit")
 
-// document.addEventListener('DOMContentLoaded', getAllTimers(), false);
+document.addEventListener('DOMContentLoaded', getAllTimers(), false);
