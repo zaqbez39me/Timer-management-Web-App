@@ -20,6 +20,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    deploy:
+      resources:
+        limits:
+          memory: 500M
     command: bin/uvicorn fastapi_app.main:app --host=${FASTAPI_HOST:-0.0.0.0} --port=${FASTAPI_PORT:-8080}
     ports:
       - ${FASTAPI_PORT:-8080}:${FASTAPI_PORT:-8080}
@@ -40,10 +44,14 @@ services:
   custom_db:
     container_name: ${CUSTOM_DB_IP:-custom_db}
     build: ./custom_db
+    deploy:
+      resources:
+        limits:
+          memory: 500M
     ports:
       - ${CUSTOM_DB_EXTERNAL_PORT:-5000}:80
     healthcheck:
-      test: ["CMD", "curl", "-f", "-G", "--data-urlencode", "query=someInvalidQuery", "http://localhost:80/Query"]
+      test: ["CMD", "curl", "-f", "-G", "--data-urlencode", "", "http://localhost:80/HealthCheck"]
       interval: 5s
       timeout: 1s
       retries: 5
@@ -53,6 +61,10 @@ services:
   pg:
     container_name: ${PG_IP:-pg}
     image: postgres:15.2-alpine
+    deploy:
+      resources:
+        limits:
+          memory: 500M
     restart: always
     env_file:
       - env/pg.env
@@ -76,6 +88,10 @@ services:
   cache:
     container_name: ${REDIS_HOST:-cache}
     image: redis:6.2-alpine
+    deploy:
+      resources:
+        limits:
+          memory: 500M
     restart: always
     entrypoint: redis-server --bind ${REDIS_HOST:-cache} --port ${REDIS_PORT:-6379} --save "" --loglevel warning --requirepass ${SECRET_REDIS?} --maxmemory 512mb --maxmemory-policy volatile-ttl
     ports:
