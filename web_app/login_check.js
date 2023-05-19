@@ -4,23 +4,25 @@ const baseUrl = `http://${BACK_IP}:${BACK_PORT}`
 
 async function login_check() {
     // Checking for necessary info in local storage
-    for (let attribute in ['access_token', 'refresh_token', 'token_type']){
+    for (let attribute in ['access_token', 'refresh_token', 'token_type']) {
+        console.log(localStorage.getItem(attribute))
         if (!localStorage.getItem(attribute)) {
+            console.log("Local storage is empty")
             return false;
         }
     }
 
     // Checking for token to be a valid key
     const response = await get_access_token_info(localStorage['access_token'], localStorage['token_type']);
-    console.log(response.status);
-    return response.status == 200
+    console.log(`Is valid key: ${response.ok}`);
+    return response.ok
 }
 
 async function get_access_token_info(token, token_type) {
     let formData = new FormData();
     const response = await fetch(`${baseUrl}/token/access/info`, {
         method: "GET",
-        headers: {"Authorization": `${token_type} ${token}`},
+        headers: { "Authorization": `Bearer ${token}` },
     });
     return response;
 }
@@ -30,6 +32,7 @@ async function redirect_if_not_logged() {
     console.log(await get_access_token_info(localStorage['access_token'], localStorage['token_type']));
     if (!(await login_check())) {
         // On fixing CORS uncomment the line after this line
+
         // window.location.assign('/1.html')
     }
 }

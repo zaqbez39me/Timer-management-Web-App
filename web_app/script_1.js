@@ -1,4 +1,3 @@
-
 let lBtn = document.getElementById("lBtn")
 let rBtn = document.getElementById("rBtn")
 let title = document.getElementById("title")
@@ -9,6 +8,7 @@ let secPass = document.querySelector('#secPass')
 
 let error1 = document.querySelector('#error1')
 let error2 = document.querySelector('#error2')
+let error3 = document.querySelector('#error3')
 
 let cPass = document.getElementById("cPass")
 
@@ -42,6 +42,8 @@ rBtn.onclick = async () => {
     error1.style.border = "0px solid #ff0000"
     error2.style.maxHeight = "0px"
     error2.style.border = "0px solid #ff0000"
+    error3.style.maxHeight = "0px"
+    error3.style.border = "0px solid #ff0000"
     if (cPass.style.maxHeight === "50px") {
         if (pass.value === secPass.value && userName.value !== "") {
             error1.style.maxHeight = "0px"
@@ -72,6 +74,7 @@ async function register(username, password) {
     let formData = new FormData();
     formData.append('username', username);
     formData.append('password', password);
+    try {
     const response = await fetch(`${baseUrl}/auth/register`, {
         method: "POST",
         headers: { "Accept": "application/json" },
@@ -83,8 +86,15 @@ async function register(username, password) {
         console.log(answer);
         // Register doesn't provide access token
         window.location.assign('/1.html')
+        return true
     } else{
         // TODO: error handling
+        error3.style.maxHeight = "50px"
+        error3.style.border = "1px solid #ff0000"
+        return false
+    }} catch (error) {
+        console.log("ERROR Registration")
+        console.log(error)
     }
 }
 
@@ -99,15 +109,24 @@ async function login(username, password) {
         body: formData,
     });
     console.log(`Sent login request. Response status: ${response.ok}`)
-    if (response.ok == true) {
+    if (response.ok) {
+        console.log('authorized')
         const answer = await response.json();
         console.log(answer);
         localStorage.setItem('access_token', answer['access_token']);
         localStorage.setItem('refresh_token', answer['refresh_token']);
         localStorage.setItem('token_type', answer['token_type']);
+        console.log(localStorage.getItem('access_token'))
+        console.log(localStorage.getItem('refresh_token'))
+        console.log(localStorage.getItem('token_type'))
         window.location.assign('/3.html')
+        return true
     } else{
         // TODO: error handling
+        console.log('Unauthorized')
+        error2.style.maxHeight = "50px"
+        error2.style.border = "1px solid #ff0000"
+        return false
     }
 }
 
