@@ -80,7 +80,7 @@ async function removeTimer(timerName) {
     console.log(responseJson);}
 }
 
-function timeMe() { // Функция добавляет таймеру слушателей событий для кнопок
+async function timeMe() { // Функция добавляет таймеру слушателей событий для кнопок
 
 
     containers = document.getElementsByClassName("timer-container")
@@ -99,7 +99,7 @@ function timeMe() { // Функция добавляет таймеру слуш
         await removeTimer(timerTitle)
         await addTimer(timerTitle, Math.floor((inputValue - now) / sec))
         await resumeTimer(timerTitle)
-        timerActive = setInterval(() => {
+        timerActive = setInterval(async () => {
             if (f0rm.nextElementSibling.className === "timer reset") {
                 f0rm.nextElementSibling.className = "timer play"
                
