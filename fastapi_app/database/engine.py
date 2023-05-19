@@ -1,26 +1,24 @@
-import time
 from typing import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import (AsyncSession, async_sessionmaker,
                                     create_async_engine)
 
+from fastapi_app.database.models import Base
+
 
 class DatabaseEngine:
     def __init__(self, database_url):
         while True:
-            try:
-                self.__engine = create_async_engine(database_url)
-                break
-            except Exception:
-                print(f"Connecting to {database_url}")
-                print("Database connection refused, retrying in 5 seconds...")
-                time.sleep(5)
+            self.__engine = create_async_engine(database_url)
+            break
         self.__session_maker = async_sessionmaker(
             bind=self.__engine, autocommit=False, class_=AsyncSession, autoflush=False
         )
 
-    async def get_engine(self):
-        return self.__engine
+    async def start(self):
+        async with self.__engine.begin() as conn:
+            # await conn.run_sync(Base.metadata.drop_all)
+            await conn.run_sync(Base.metadata.create_all)
 
     async def session(self) -> AsyncGenerator[AsyncSession, None]:
         async with self.__session_maker() as session:

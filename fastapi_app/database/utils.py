@@ -17,11 +17,11 @@ def db_model_to_schema(db_obj: Base, model: Type[BaseModel]) -> BaseModel:
 
 
 async def delete_by_model_value(
-    session: AsyncSession,
-    model: Type[Model],
-    attribute: Column | Any,
-    value: Any,
-    commit: bool = False,
+        session: AsyncSession,
+        model: Type[Model],
+        attribute: Column | Any,
+        value: Any,
+        commit: bool = False,
 ) -> None:
     await session.execute(delete(model).where(attribute == value))
     if commit:
@@ -29,19 +29,19 @@ async def delete_by_model_value(
 
 
 async def get_by_model(
-    session: AsyncSession,
-    model: Type[Model],
+        session: AsyncSession,
+        model: Type[Model],
 ) -> list[Model]:
     res = await session.execute(select(model))
     return res.scalars().all()
 
 
 async def get_by_model_value(
-    session: AsyncSession,
-    model: Type[Model],
-    attribute: Column | Any,
-    value: Any,
-    unique: bool = True,
+        session: AsyncSession,
+        model: Type[Model],
+        attribute: Column | Any,
+        value: Any,
+        unique: bool = True,
 ) -> list[Model] | Model:
     res = await session.execute(select(model).where(attribute == value))
     res = res.scalars()
@@ -57,21 +57,21 @@ async def add_to_db(session: AsyncSession, item: Base, commit: bool = False):
 
 
 async def add_to_db_bg(
-    background_tasks: BackgroundTasks,
-    session: AsyncSession,
-    item: Base,
-    commit: bool = False,
+        background_tasks: BackgroundTasks,
+        session: AsyncSession,
+        item: Base,
+        commit: bool = False,
 ):
     background_tasks.add_task(add_to_db, session=session, item=item, commit=commit)
 
 
 async def delete_by_model_value_bg(
-    background_tasks: BackgroundTasks,
-    session: AsyncSession,
-    model: Type[Model],
-    attribute: Column | Any,
-    value: Any,
-    commit: bool = False,
+        background_tasks: BackgroundTasks,
+        session: AsyncSession,
+        model: Type[Model],
+        attribute: Column | Any,
+        value: Any,
+        commit: bool = False,
 ):
     background_tasks.add_task(
         delete_by_model_value,

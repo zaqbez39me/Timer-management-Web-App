@@ -2,7 +2,6 @@ from datetime import datetime
 
 from sqlalchemy import Column
 from sqlalchemy.dialects.postgresql import BIGINT, TIMESTAMP, VARCHAR
-from sqlalchemy.orm import relationship
 
 from fastapi_app.database.models import Base
 

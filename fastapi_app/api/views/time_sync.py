@@ -23,4 +23,4 @@ async def change_password(
     session_id: str | None = Cookie(default=None),
 ):
     await verify_access_token(db, access_token, session_id)
-    return ServerTimeResponse(server_time=pytz.UTC.localize(datetime.utcnow()))
+    return ServerTimeResponse(server_time=pytz.UTC.localize(dt=datetime.utcnow()))

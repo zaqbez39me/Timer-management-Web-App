@@ -6,9 +6,12 @@ the progress and metadata will be saved.
 
 # Instructions
 
+## Load the submodules
+Run `git submodule update --init --recursive`
+
 ## Prepare and load the env variables
 Here you should set parameters that you want to have in your project. 
-All the the environmental variables should be stored in `/env` folder. 
+All the environmental variables should be stored in `/env` folder. 
 
 Initially, in the `env` directory there are `<name>.env-example` examples with 
 all possible variables for the `<name>.env` file.
@@ -34,10 +37,10 @@ obliged to set them all.
 
 * To build and run docker containers just use single command:
 
-`docker-compose build --no-cache && docker-compose up`
+`docker-compose build && docker-compose up`
 * To build the application using docker compose just run the following command:
 
-`docker-compose build --no-cache`
+`docker-compose build`
 * To up the docker-compose build use the following command:
 
 `docker-compose up`
@@ -45,4 +48,5 @@ obliged to set them all.
 ### Link to the Postman collection with all the authorization requests and responses:
 [![Authorization collection](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)](https://www.postman.com/lunar-crescent-398747/workspace/timers/collection/17330906-a9586c45-c8f7-4381-aff5-8407553e7483)
 
-
+### Link to the Postman collection with requests to the Custom-DB:
+[![Custom-DB collection](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)](https://www.postman.com/lunar-crescent-398747/workspace/timers/collection/27185599-408010f2-9cea-412a-90e0-72dc7b3c46be)
