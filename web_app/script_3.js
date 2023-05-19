@@ -97,7 +97,7 @@ async function timeMe() { // Функция добавляет таймеру с
         let nowTime = 0
         console.log(Math.floor((inputValue - now) / sec), timerTitle)
         await removeTimer(timerTitle)
-        await addTimer(timerTitle, Math.floor((inputValue - now) / sec))
+        await addTimer(timerTitle, Math.floor((inputValue) / sec))
         await resumeTimer(timerTitle)
         timerActive = setInterval(async () => {
             if (f0rm.nextElementSibling.className === "timer reset") {
@@ -218,4 +218,3 @@ adder.addEventListener('click', createTime)
 madder.addEventListener('click', createTime)
 
 let exitBtn = document.querySelector(".header__exit")
-
