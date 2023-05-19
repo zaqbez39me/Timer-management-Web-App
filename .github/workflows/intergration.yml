@@ -26,9 +26,9 @@ jobs:
       run: source <(python3 env/set_env.py)
     - name: Unifying secrets
       run: | 
-        sed '1q;d' env/secrets.env | cut -d "=" -f 2 >> $SECRET_ACCESS_KEY
-        sed '2q;d' env/secrets.env | cut -d "=" -f 2 >> $SECRET_REFRESH_KEY
-        sed '3q;d' env/secrets.env | cut -d "=" -f 2 >> $SECRET_REDIS
+        sed '1q;d' env/secrets.env >> "$GITHUB_ENV"
+        sed '2q;d' env/secrets.env >> "$GITHUB_ENV"
+        sed '3q;d' env/secrets.env >> "$GITHUB_ENV"
     - name: Build and deploy main stack
       run: docker-compose build && docker-compose up -d
     - name: Build, deploy and use tests container
