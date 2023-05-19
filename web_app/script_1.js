@@ -111,10 +111,12 @@ async function login(username, password) {
         body: formData,
     });
     console.log('Cookie');
+    console.log(response.headers.getSetCookie())
     console.log(response.headers);
     console.log(response.headers['set-cookie'])
     console.log(response.headers.get('set-cookie')); // undefined 
     console.log(document.cookie); // nope 
+    
 
     console.log(`Sent login request. Response status: ${response.ok}`)
     if (response.ok) {

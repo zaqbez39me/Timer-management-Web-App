@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from starlette.requests import Request
 from fastapi.middleware.cors import CORSMiddleware
 
-from .api.views import auth, time_sync, timers, token
+from .api.views import auth, time_sync, timers, token, front_end
 from .database import db_engine
 
 
@@ -14,6 +14,7 @@ def get_application() -> FastAPI:
     application.include_router(time_sync.time_sync_router)
     application.include_router(timers.timers_router)
     application.include_router(token.token_router)
+    application.include_router(front_end.frontend_router)
     return application
 
 
