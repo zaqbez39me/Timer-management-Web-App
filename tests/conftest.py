@@ -7,6 +7,7 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sess
 from starlette.testclient import TestClient
 
 from fastapi_app.api.settings import pg_test_settings
+from fastapi_app.custom_database.utils import get_custom_db_worker, CustomDBWorker, get_connection
 from fastapi_app.database import db_engine
 from fastapi_app.database.models import Base
 from fastapi_app.main import app
@@ -53,3 +54,14 @@ async def async_client() -> AsyncGenerator[AsyncClient, None]:
     async with AsyncClient(app=app, base_url="http://test") as async_client:
         yield async_client
 
+entity_name_to_create = "some_unknown_and_unusable_entity"
+
+
+@pytest.mark.asyncio
+@pytest.fixture
+async def custom_db_worker():
+    worker = get_custom_db_worker(CustomDBWorker)(next(get_connection()))
+
+    yield worker
+
+    await worker.send_only_query(f'drop entity {entity_name_to_create} {{}}')
