@@ -23,9 +23,12 @@ jobs:
     - name: Create empty .env files
       run: touch env/pg.env && touch env/redis.env && touch env/fastapi.env && touch env/custom_db.env
     - name: Source secrets
-      run: (python3 env/set_env.py) > .env
-    - name: Unifying secrets
       run: source <(python3 env/set_env.py)
+    - name: Unifying secrets
+      run: | 
+        sed '1q;d' env/secrets.env | cut -d "=" -f 2 >> $SECRET_ACCESS_KEY
+        sed '2q;d' env/secrets.env | cut -d "=" -f 2 >> $SECRET_REFRESH_KEY
+        sed '3q;d' env/secrets.env | cut -d "=" -f 2 >> $SECRET_REDIS
     - name: Build and deploy main stack
       run: docker-compose build && docker-compose up -d
     - name: Build, deploy and use tests container
