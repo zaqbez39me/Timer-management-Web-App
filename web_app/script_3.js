@@ -119,9 +119,7 @@ async function timeMe() { // Функция добавляет таймеру с
 
     containers = document.getElementsByClassName("timer-container")
     forms = containers[containers.length - 1].getElementsByClassName("timer")
-    datePicker = forms[0].querySelectorAll(".input-date")[1]
-    const today = new Date().toISOString().split("T")[0]
-    datePicker.setAttribute("min", today)
+    
 
     // Интервал
     let timerActive;
@@ -186,8 +184,8 @@ async function timeMe() { // Функция добавляет таймеру с
         if (inputDate === '') {
             alert(`Please select a date for the Timer\nTimer name : "${inputTitle}"`)
         } else {
-            var a = inputDate.split(':'); // split it at the colons
-            var inputValue = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
+            let a = inputDate.split(':'); // split it at the colons
+            let inputValue = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
             timerTitle.textContent = `${inputTitle}`
             finishTimerTitle.textContent = `${inputTitle}`
             isPaused = false
