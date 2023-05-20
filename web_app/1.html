@@ -22,7 +22,7 @@
             <div class="container">
                 <div class="logreg-box">
                     <h1 class="logreg" id="title">Register</h1>
-                    <form action="auth/register" method="post">
+                    <!-- <form> -->
                         <div class="input-group">
                             <div class="input-field" id="nameField">
                                 <input class="ilogreg" type="text" id="name" placeholder="Username" name="username">
@@ -39,12 +39,15 @@
                             <div class="error-field1" id="error2">
                                 <p class="errlog" id="incorrect-data">Incorrect name or password</p>
                             </div>
+                            <div class="error-field1" id="error3">
+                                <p class="errreg" id="user-exists">User already exists</p>
+                            </div>
                         </div>
                         <div class="btn-field">
                             <button type="button" id="rBtn">Register</button>
                             <button type="button" class="disable" id="lBtn">Login</button>
                         </div>
-                    </form>
+                    <!-- </form> -->
                 </div>
             </div>
         </main>
