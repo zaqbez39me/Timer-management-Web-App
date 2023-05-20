@@ -3,6 +3,31 @@ minute = sec * 60
 hour = minute * 60
 day = hour * 24
 
+function refresh(timers){
+    for (let i=0; i<timers.length; i++){
+        obj = timers[i]
+        console.log(obj)
+        document.querySelector(".header__add").click()
+        containers = document.getElementsByClassName("timer-container")
+        forms = containers[containers.length - 1].getElementsByClassName("timer")
+        forms[0].querySelector(".input_name").value = obj["name"]
+        let hours = Math.floor(obj["time_left"]/3600)
+        let minutes = Math.floor((obj["time_left"] - (hours * 3600)) / 60);
+        let seconds = obj["time_left"] - (hours * 3600) - (minutes * 60);
+        if (hours   < 10) {hours   = "0"+hours;}
+        if (minutes < 10) {minutes = "0"+minutes;}
+        if (seconds < 10) {seconds = "0"+seconds;}
+        forms[0].querySelectorAll(".input-date")[1].value= hours+':'+minutes+':'+seconds;
+        forms[0].querySelector(".timer-button").click()
+        if (!obj["active"]){
+            console.log(forms[1].querySelector(".timer-button"))
+            forms[1].querySelector(".timer-button").click()
+        }
+        console.dir(timers)
+
+    }
+}
+
 
 async function getServerTime() {
     token = sessionStorage.getItem('access_token')
@@ -79,6 +104,7 @@ async function getAllTimers() {
     }
     // console.log("timers")
     // console.log(timers)
+    refresh(timers)
     return timers
 }
 
@@ -179,9 +205,7 @@ async function timeMe() { // Функция добавляет таймеру с
 
     containers = document.getElementsByClassName("timer-container")
     forms = containers[containers.length - 1].getElementsByClassName("timer")
-    datePicker = forms[0].querySelectorAll(".input-date")[1]
-    const today = new Date().toISOString().split("T")[0]
-    datePicker.setAttribute("min", today)
+    
 
     // Интервал
     let timerActive;
@@ -189,10 +213,22 @@ async function timeMe() { // Функция добавляет таймеру с
     async function updateDom(f0rm, timerElements, inputValue, timerTitle) {
         let now = new Date().getTime()
         let nowTime = 0
-        console.log(Math.floor((inputValue - now) / sec), timerTitle)
+        console.log(Math.floor((inputValue) / sec), timerTitle)
         await removeTimer(timerTitle)
         await addTimer(timerTitle, Math.floor((inputValue) / sec))
         await resumeTimer(timerTitle)
+        f0rm.hidden = true
+        f0rm.nextElementSibling.hidden = false
+        const distance = inputValue - nowTime
+        const days = Math.floor(distance / day)
+        const hours = Math.floor((distance % day) / hour)
+        const minutes = Math.floor((distance % hour) / minute)
+        const seconds = Math.floor((distance % minute) / sec)
+        nowTime += sec
+        timerElements[0].textContent = `${days}`
+        timerElements[1].textContent = `${hours}`
+        timerElements[2].textContent = `${minutes}`
+        timerElements[3].textContent = `${seconds}`
         timerActive = setInterval(async () => {
             if (f0rm.nextElementSibling.className === "timer reset") {
                 f0rm.nextElementSibling.className = "timer play"
@@ -234,8 +270,8 @@ async function timeMe() { // Функция добавляет таймеру с
         if (inputDate === '') {
             alert(`Please select a date for the Timer\nTimer name : "${inputTitle}"`)
         } else {
-            var a = inputDate.split(':'); // split it at the colons
-            var inputValue = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
+            let a = inputDate.split(':'); // split it at the colons
+            let inputValue = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
             timerTitle.textContent = `${inputTitle}`
             finishTimerTitle.textContent = `${inputTitle}`
             isPaused = false
@@ -312,5 +348,4 @@ adder.addEventListener('click', createTime)
 madder.addEventListener('click', createTime)
 
 let exitBtn = document.querySelector(".header__exit")
-
 document.addEventListener('DOMContentLoaded', getAllTimers(), false);
