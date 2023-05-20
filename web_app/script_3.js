@@ -1,4 +1,3 @@
-
 sec = 1000
 minute = sec * 60
 hour = minute * 60
@@ -12,12 +11,12 @@ async function getServerTime() {
         credentials: "include",
         headers: { "Accept": "application/json", "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
     })
-    if (!response.ok) {
-        window.location.assign('/1.html')
-    }
-    responseJson = response.json()
+    // if (!response.ok) {
+    //     window.location.assign('/1.html')
+    // }
+    responseJson = await response.json()
     console.log(responseJson["server_time"])
-    return new Date(responseJson["server_time"])
+    return Math.floor((new Date(responseJson["server_time"])).getTime() / 1000)
 }
 
 async function fetchAllTimers() {
@@ -27,10 +26,10 @@ async function fetchAllTimers() {
         credentials: "include",
         headers: { "Accept": "application/json", "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
     })
-    if (!response.ok) {
-        window.location.assign('/1.html')
-    }
-    responseJson = response.json()
+    // if (!response.ok) {
+    //     window.location.assign('/1.html')
+    // }
+    responseJson = await response.json()
     console.log(responseJson)
     return responseJson
 }
@@ -56,18 +55,30 @@ async function getAllTimers() {
     responseTime = Math.floor(Date.now() / 1000)
     timers = await fetchAllTimers()
     clientTime = ChristianAlgorithm(serverTime, requestTime, responseTime)
-    actualTime = Date.now()
+    actualTime = Math.floor(Date.now() / 1000)
     timeError = actualTime - clientTime
     // Date.setTime(clientTime)
     for (let i = 0; i < timers.length; ++i) {
-        console.log(`Time left: ${timers["time_left"]}`)
-        if (timers["active"]) {
-            timers["time_left"] = Math.floor((Date.now() + timeError) / 1000) - Math.floor(new Date(timers["start_time"]).getTime() / 1000)
-            // console.log(`Time left: ${timers["time_left"]}`)
+        // console.log(`Time left: ${timers[i]["time_left"]}`)
+        if (timers[i]["active"]) {
+            end_time = Math.floor((new Date(timers[i]["start_time"])).getTime() / 1000) + timers[i]["duration_seconds"]
+            current_time = Math.floor(new Date() / 1000) + new Date().getTimezoneOffset() * 60
+            // console.log('start time in seconds: ', Math.floor((new Date(timers[i]["start_time"])).getTime() / 1000))
+            // console.log('duration seconds ', timers[i]["duration_seconds"])
+            // console.log('end time ', end_time)
+            // console.log('current time ', current_time)
+            // console.log('time error ', timeError)
+            timers[i]["time_left"] = end_time - current_time + timeError
+            if (timers[i]["time_left"] <= 0) {
+                timers[i]["time_left"] = 0
+                timers[i]["active"] = false
+            }
+            // timers[i]["time_left"] = Math.floor(((Date.now()) + timeError * 1000) / 1000) - Math.floor((new Date(timers[i]["start_time"])).getTime() / 1000)
+            // console.log(`Time left: ${timers[i]["time_left"]}`)
         }
     }
-    console.log("timers")
-    console.log(timers)
+    // console.log("timers")
+    // console.log(timers)
     return timers
 }
 
@@ -86,11 +97,11 @@ async function addTimer(timerName, durationInSeconds) {
         headers: { "Accept": "application/json", "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: body
     })
-    if (!response.ok) {
-        window.location.assign('/1.html')
-    }
-    responseJson = response.json()
-    console.log(responseJson);
+    // if (!response.ok) {
+    //     window.location.assign('/1.html')
+    // }
+    // responseJson = response.json()
+    // console.log(responseJson);
 }
 
 async function stopTimer(timerName) {
@@ -103,11 +114,11 @@ async function stopTimer(timerName) {
             "name": timerName
         })
     })
-    if (!response.ok) {
-        window.location.assign('/1.html')
-    }
-    responseJson = response.json()
-    console.log(responseJson);
+    // if (!response.ok) {
+    //     window.location.assign('/1.html')
+    // }
+    // responseJson = response.json()
+    // console.log(responseJson);
 
 }
 async function resumeTimer(timerName) {
@@ -120,11 +131,11 @@ async function resumeTimer(timerName) {
             "name": timerName
         })
     })
-    if (!response.ok) {
-        window.location.assign('/1.html')
-    }
-    responseJson = response.json()
-    console.log(responseJson);
+    // if (!response.ok) {
+    //     window.location.assign('/1.html')
+    // }
+    // responseJson = response.json()
+    // console.log(responseJson);
 
 }
 async function resetTimer(timerName, durationInSeconds) {
@@ -137,11 +148,11 @@ async function resetTimer(timerName, durationInSeconds) {
             "name": timerName
         })
     })
-    if (!response.ok) {
-        window.location.assign('/1.html')
-    }
-    responseJson = response.json()
-    console.log(responseJson);
+    // if (!response.ok) {
+    //     window.location.assign('/1.html')
+    // }
+    // responseJson = response.json()
+    // console.log(responseJson);
 
 }
 async function removeTimer(timerName) {
@@ -154,11 +165,11 @@ async function removeTimer(timerName) {
             "name": timerName
         })
     })
-    if (!response.ok) {
-        window.location.assign('/1.html')
-    }
+    // if (!response.ok) {
+    //     window.location.assign('/1.html')
+    // }
     if (response.ok) {
-        responseJson = response.json()
+        responseJson = await response.json()
         console.log(responseJson);
     }
 }
