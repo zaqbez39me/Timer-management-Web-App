@@ -123,7 +123,11 @@ class CustomDBWorker:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid request")
 
     async def remove_timer_for_user(self, user_id: int, timer_name: str):
-        user = (await self.get_users_by_id([user_id]))[0]
+        users = (await self.get_users_by_id([user_id]))
+        if len(users) == 0:
+            # The user is not registered in Custom-DB (they didn't create any timers yet)
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No such timer in database")
+        user = users[0]
         timers = await self.get_timers_for_user(user_id)
         for timer in timers:
             if timer["name"] == timer_name:
@@ -136,7 +140,11 @@ class CustomDBWorker:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No such timer in database")
 
     async def rename_timer_for_user(self, user_id: int, old_timer_name: str, new_timer_name: str):
-        user = (await self.get_users_by_id([user_id]))[0]
+        users = (await self.get_users_by_id([user_id]))
+        if len(users) == 0:
+            # The user is not registered in Custom-DB (they didn't create any timers yet)
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No such timer in database")
+        user = users[0]
         timers = await self.get_timers_for_user(user_id)
         for timer in timers:
             if timer["name"] == old_timer_name:
