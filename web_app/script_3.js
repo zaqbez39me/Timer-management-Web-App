@@ -16,6 +16,7 @@ function refresh(timers){
         if (hours   < 10) {hours   = "0"+hours;}
         if (minutes < 10) {minutes = "0"+minutes;}
         if (seconds < 10) {seconds = "0"+seconds;}
+	console.log(forms[0].querySelectorAll(".input-date")[1].value)
         forms[0].querySelectorAll(".input-date")[1].value= hours+':'+minutes+':'+seconds;
         forms[0].querySelector(".timer-button").click()
         if (!obj["active"] && obj["time_left"] !== 0){
