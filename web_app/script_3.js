@@ -276,7 +276,7 @@ async function timeMe() { // Функция добавляет таймеру с
         if (inputDate === '') {
             alert(`Please select a date for the Timer\nTimer name : "${inputTitle}"`)
         } else {
-            let a = inputDate.split(':'); // split it at the colons
+            let a = inputDate.split('00:00:00'); // split it at the colons
             let inputValue = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
             timerTitle.textContent = `${inputTitle}`
             isPaused = false
