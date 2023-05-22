@@ -3,9 +3,11 @@ minute = sec * 60
 hour = minute * 60
 day = hour * 24
 
+refreshTime = true
 function refresh(timers){
     for (let i=0; i<timers.length; i++){
         obj = timers[i]
+        console.log(obj)
         document.querySelector(".header__add").click()
         containers = document.getElementsByClassName("timer-container")
         forms = containers[containers.length - 1].getElementsByClassName("timer")
@@ -16,14 +18,16 @@ function refresh(timers){
         if (hours   < 10) {hours   = "0"+hours;}
         if (minutes < 10) {minutes = "0"+minutes;}
         if (seconds < 10) {seconds = "0"+seconds;}
-	console.log(forms[0].querySelectorAll(".input-date")[1].value)
         forms[0].querySelectorAll(".input-date")[1].value= hours+':'+minutes+':'+seconds;
         forms[0].querySelector(".timer-button").click()
-        if (!obj["active"] && obj["time_left"] !== 0){
+        if (!obj["active"]){
+            console.log(forms[1].querySelector(".timer-button"))
             forms[1].querySelector(".timer-button").click()
         }
+        console.dir(timers)
 
     }
+    refreshTime = false
 }
 
 
@@ -211,7 +215,7 @@ async function timeMe() { // Функция добавляет таймеру с
 
     containers = document.getElementsByClassName("timer-container")
     forms = containers[containers.length - 1].getElementsByClassName("timer")
-    
+
 
     // Интервал
     let timerActive;
@@ -219,8 +223,10 @@ async function timeMe() { // Функция добавляет таймеру с
     async function updateDom(f0rm, timerElements, inputValue, timerTitle) {
         let now = new Date().getTime()
         let nowTime = 0
+        console.log(Math.floor((inputValue) / sec), timerTitle)
         if(!(await addTimer(timerTitle, Math.floor((inputValue) / sec))))
-            return;
+            if (!refreshTime)
+                return;
         await resumeTimer(timerTitle)
         f0rm.hidden = true
         f0rm.nextElementSibling.hidden = false
@@ -236,14 +242,19 @@ async function timeMe() { // Функция добавляет таймеру с
         timerElements[3].textContent = `${seconds}`
         f0rm.nextElementSibling.className = "timer play"
         const id = timerElements[0].closest(".dig-time")
-        id.style.background = "linear-gradient(62.99deg, #EEF1F0 7.18%, #71757E 83.56%)"
-        id.style.webkitBackgroundClip= "text"
+        if (distance===0){
+            id.style.background = "linear-gradient(62.99deg, #25EFAC 18.31%, #21BE57 83.56%)"
+            id.style.webkitBackgroundClip= "text"
+        }else {
+            id.style.background = "linear-gradient(62.99deg, #EEF1F0 7.18%, #71757E 83.56%)"
+            id.style.webkitBackgroundClip = "text"
+        }
         f0rm.nextElementSibling.querySelectorAll(".timer-button")[0].disabled = false
         f0rm.nextElementSibling.querySelectorAll(".timer-button")[1].disabled = false
         timerActive = setInterval(async () => {
             if (f0rm.nextElementSibling.className === "timer reset"){
                 id.style.background = "linear-gradient(62.99deg, #EEF1F0 7.18%, #71757E 83.56%)"
-	            id.style.webkitBackgroundClip = "text"
+                id.style.webkitBackgroundClip = "text"
                 nowTime = 0
                 f0rm.nextElementSibling.className = "timer"
                 distance = inputValue - nowTime
@@ -271,6 +282,8 @@ async function timeMe() { // Функция добавляет таймеру с
                 let distance = inputValue - nowTime
                 nowTime += sec
                 if (distance < 0) {
+                    id.style.background = "linear-gradient(62.99deg, #25EFAC 18.31%, #21BE57 83.56%)"
+                    id.style.webkitBackgroundClip= "text"
                     f1rm = f0rm.nextElementSibling
                     f1rm.className = "timer settings"
                     f0rm.nextElementSibling.querySelectorAll(".timer-button")[0].disabled = true
@@ -301,16 +314,11 @@ async function timeMe() { // Функция добавляет таймеру с
         let timerElements = f0rm.nextElementSibling.querySelectorAll("span")
         inputTitle = f0rm.querySelector(".input_name").value
         let inputDate = f0rm.querySelectorAll(".input-date")[1].value
-        if (inputDate === '00:00:00') {
-            
-        } else {
-            let a = inputDate.split(':'); // split it at the colons
-            let inputValue = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
-            timerTitle.textContent = `${inputTitle}`
-            isPaused = false
-            updateDom(f0rm, timerElements, inputValue * 1000, inputTitle)
-        }
-
+        let a = inputDate.split(':'); // split it at the colons
+        let inputValue = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
+        timerTitle.textContent = `${inputTitle}`
+        isPaused = false
+        updateDom(f0rm, timerElements, inputValue * 1000, inputTitle)
     }
 
     async function settings(e) {
@@ -318,14 +326,14 @@ async function timeMe() { // Функция добавляет таймеру с
         if (f1rm.className === "timer play" || f1rm.className === "timer") {
             f1rm.previousElementSibling.querySelector(".timer-button").disabled = true
         }
-            await removeTimer(f1rm.querySelector(".timer-name").textContent)
-            f1rm.querySelector("img").setAttribute("src", "./img/svg/pause.svg")
-            f1rm.previousElementSibling.hidden = false
-            f1rm.hidden = true
-            if (f1rm.className !== "timer settings") {
-                f1rm.className = "timer settings"
-                f1rm.querySelectorAll(".timer-button")[1].disabled = true
-            }
+        await removeTimer(f1rm.querySelector(".timer-name").textContent)
+        f1rm.querySelector("img").setAttribute("src", "./img/svg/pause.svg")
+        f1rm.previousElementSibling.hidden = false
+        f1rm.hidden = true
+        if (f1rm.className !== "timer settings") {
+            f1rm.className = "timer settings"
+            f1rm.querySelectorAll(".timer-button")[1].disabled = true
+        }
 
 
 
