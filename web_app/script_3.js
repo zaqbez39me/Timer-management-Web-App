@@ -231,6 +231,7 @@ async function timeMe() { // Функция добавляет таймеру с
         const id = timerElements[0].closest(".dig-time")
         id.style.background = "linear-gradient(62.99deg, #EEF1F0 7.18%, #71757E 83.56%)"
         id.style.webkitBackgroundClip= "text"
+        f0rm.nextElementSibling.querySelectorAll(".timer-button")[1].disabled = false
         timerActive = setInterval(async () => {
             if (f0rm.nextElementSibling.className === "timer reset"){
                 nowTime = 0
@@ -251,8 +252,7 @@ async function timeMe() { // Функция добавляет таймеру с
             }
             else if (f0rm.nextElementSibling.className === "timer settings") {
 
-                f0rm.nextElementSibling.className = "timer play"
-
+                // f0rm.nextElementSibling.className = "timer play"
                 clearInterval(timerActive)
                 f0rm.querySelector(".timer-button").disabled = false
             } else if (f0rm.nextElementSibling.className === "timer play") {
@@ -263,6 +263,7 @@ async function timeMe() { // Функция добавляет таймеру с
                 if (distance < 0) {
                     f1rm = f0rm.nextElementSibling
                     f1rm.className = "timer settings"
+                    f0rm.nextElementSibling.querySelectorAll(".timer-button")[1].disabled = true
 
                 } else {
                     const days = Math.floor(distance / day)
@@ -304,14 +305,17 @@ async function timeMe() { // Функция добавляет таймеру с
 
     async function settings(e) {
         f1rm = this.closest(".timer")
-        f1rm.previousElementSibling.querySelector(".timer-button").disabled = true
-        await removeTimer(f1rm.querySelector(".timer-name").textContent)
-        f1rm.querySelector("img").setAttribute("src", "./img/svg/pause.svg")
-        f1rm.previousElementSibling.hidden = false
-        f1rm.hidden = true
-
-        f1rm.className = "timer settings"
-
+        if (f1rm.className === "timer play" || f1rm.className === "timer") {
+            f1rm.previousElementSibling.querySelector(".timer-button").disabled = true
+            await removeTimer(f1rm.querySelector(".timer-name").textContent)
+            f1rm.querySelector("img").setAttribute("src", "./img/svg/pause.svg")
+            f1rm.previousElementSibling.hidden = false
+            f1rm.hidden = true
+            if (f1rm.className !== "timer settings") {
+                f1rm.className = "timer settings"
+                f1rm.querySelectorAll(".timer-button")[1].disabled = true
+            }
+        }
 
 
     }
