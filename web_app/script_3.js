@@ -98,7 +98,7 @@ async function getAllTimers() {
             timers[i]["time_left"] = end_time - current_time + timeError
             if (timers[i]["time_left"] <= 0) {
                 timers[i]["time_left"] = 0
-                timers[i]["active"] = false
+                timers[i]["active"] = true
             }
             // timers[i]["time_left"] = Math.floor(((Date.now()) + timeError * 1000) / 1000) - Math.floor((new Date(timers[i]["start_time"])).getTime() / 1000)
             // console.log(`Time left: ${timers[i]["time_left"]}`)
