@@ -224,11 +224,12 @@ async function timeMe() { // Функция добавляет таймеру с
         let now = new Date().getTime()
         let nowTime = 0
         console.log(Math.floor((inputValue) / sec), timerTitle)
-        if(!(await addTimer(timerTitle, Math.floor((inputValue) / sec))))
+        if(!(await addTimer(timerTitle, Math.floor((inputValue) / sec)))){
             if (!refreshTime){
                 alert(`Please select a unique timer name!"`)
                 return;
             }
+        }
         await resumeTimer(timerTitle)
         f0rm.hidden = true
         f0rm.nextElementSibling.hidden = false
