@@ -264,7 +264,7 @@ async function timeMe() { // Функция добавляет таймеру с
                     f1rm = f0rm.nextElementSibling
                     f1rm.className = "timer settings"
                     f0rm.nextElementSibling.querySelectorAll(".timer-button")[1].disabled = true
-
+                    // f0rm.nextElementSibling.querySelectorAll(".timer-button")[2].click()
                 } else {
                     const days = Math.floor(distance / day)
                     const hours = Math.floor((distance % day) / hour)
@@ -307,6 +307,7 @@ async function timeMe() { // Функция добавляет таймеру с
         f1rm = this.closest(".timer")
         if (f1rm.className === "timer play" || f1rm.className === "timer") {
             f1rm.previousElementSibling.querySelector(".timer-button").disabled = true
+        }
             await removeTimer(f1rm.querySelector(".timer-name").textContent)
             f1rm.querySelector("img").setAttribute("src", "./img/svg/pause.svg")
             f1rm.previousElementSibling.hidden = false
@@ -315,7 +316,7 @@ async function timeMe() { // Функция добавляет таймеру с
                 f1rm.className = "timer settings"
                 f1rm.querySelectorAll(".timer-button")[1].disabled = true
             }
-        }
+
 
 
     }
