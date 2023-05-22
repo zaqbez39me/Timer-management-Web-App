@@ -5,6 +5,7 @@ day = hour * 24
 
 refreshTime = true
 function refresh(timers){
+    refreshTime = true
     for (let i=0; i<timers.length; i++){
         obj = timers[i]
         console.log(obj)
