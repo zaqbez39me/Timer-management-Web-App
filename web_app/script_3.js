@@ -202,7 +202,6 @@ async function removeTimer(timerName) {
 
 async function timeMe() { // Функция добавляет таймеру слушателей событий для кнопок
 
-
     containers = document.getElementsByClassName("timer-container")
     forms = containers[containers.length - 1].getElementsByClassName("timer")
     
@@ -214,7 +213,6 @@ async function timeMe() { // Функция добавляет таймеру с
         let now = new Date().getTime()
         let nowTime = 0
         console.log(Math.floor((inputValue) / sec), timerTitle)
-        await removeTimer(timerTitle)
         await addTimer(timerTitle, Math.floor((inputValue) / sec))
         await resumeTimer(timerTitle)
         f0rm.hidden = true
@@ -229,33 +227,42 @@ async function timeMe() { // Функция добавляет таймеру с
         timerElements[1].textContent = `${hours}`
         timerElements[2].textContent = `${minutes}`
         timerElements[3].textContent = `${seconds}`
+        f0rm.nextElementSibling.className = "timer play"
+        const id = timerElements[0].closest(".dig-time")
+        id.style.background = "linear-gradient(62.99deg, #EEF1F0 7.18%, #71757E 83.56%)"
+        id.style.webkitBackgroundClip= "text"
         timerActive = setInterval(async () => {
             if (f0rm.nextElementSibling.className === "timer reset") {
+
                 f0rm.nextElementSibling.className = "timer play"
 
                 clearInterval(timerActive)
+                f0rm.querySelector(".timer-button").disabled = false
             } else if (f0rm.nextElementSibling.className === "timer play") {
                 f0rm.hidden = true
                 f0rm.nextElementSibling.hidden = false
                 const distance = inputValue - nowTime
                 nowTime += sec
-                const days = Math.floor(distance / day)
-                const hours = Math.floor((distance % day) / hour)
-                const minutes = Math.floor((distance % hour) / minute)
-                const seconds = Math.floor((distance % minute) / sec)
-                // console.log(days, hours, minutes, seconds)
                 if (distance < 0) {
                     f1rm = f0rm.nextElementSibling
-                    await resetTimer(f1rm.querySelector(".timer-name").textContent)
-                    f1rm.previousElementSibling.hidden = true
-                    f1rm.hidden = true
-                    f1rm.nextElementSibling.hidden = false
                     f1rm.className = "timer reset"
+
+                } else {
+                    const days = Math.floor(distance / day)
+                    const hours = Math.floor((distance % day) / hour)
+                    const minutes = Math.floor((distance % hour) / minute)
+                    const seconds = Math.floor((distance % minute) / sec)
+                    // console.log(days, hours, minutes, seconds)
+
+                    timerElements[0].textContent = `${days}`
+                    timerElements[1].textContent = `${hours}`
+                    timerElements[2].textContent = `${minutes}`
+                    timerElements[3].textContent = `${seconds}`
+                    if (distance===0){
+                        id.style.background = "linear-gradient(62.99deg, #25EFAC 18.31%, #21BE57 83.56%)"
+                        id.style.webkitBackgroundClip= "text"
+                    }
                 }
-                timerElements[0].textContent = `${days}`
-                timerElements[1].textContent = `${hours}`
-                timerElements[2].textContent = `${minutes}`
-                timerElements[3].textContent = `${seconds}`
             }
         }, sec)
     }
@@ -263,7 +270,6 @@ async function timeMe() { // Функция добавляет таймеру с
     function updateCountdown(e) {
         f0rm = this.closest(".timer")
         let timerTitle = f0rm.nextElementSibling.querySelector(".timer-name")
-        let finishTimerTitle = f0rm.nextElementSibling.nextElementSibling.querySelector(".timer-name")
         let timerElements = f0rm.nextElementSibling.querySelectorAll("span")
         inputTitle = f0rm.querySelector(".input_name").value
         let inputDate = f0rm.querySelectorAll(".input-date")[1].value
@@ -273,7 +279,6 @@ async function timeMe() { // Функция добавляет таймеру с
             let a = inputDate.split(':'); // split it at the colons
             let inputValue = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
             timerTitle.textContent = `${inputTitle}`
-            finishTimerTitle.textContent = `${inputTitle}`
             isPaused = false
             updateDom(f0rm, timerElements, inputValue * 1000, inputTitle)
         }
@@ -282,7 +287,8 @@ async function timeMe() { // Функция добавляет таймеру с
 
     async function reset(e) {
         f1rm = this.closest(".timer")
-        await resetTimer(f1rm.querySelector(".timer-name").textContent)
+        f1rm.previousElementSibling.querySelector(".timer-button").disabled = true
+        await removeTimer(f1rm.querySelector(".timer-name").textContent)
         f1rm.querySelector("img").setAttribute("src", "./img/svg/pause.svg")
         f1rm.previousElementSibling.hidden = false
         f1rm.hidden = true
@@ -290,15 +296,14 @@ async function timeMe() { // Функция добавляет таймеру с
         f1rm.className = "timer reset"
 
 
+
     }
 
     async function end(e) {
         await removeTimer(f1rm.querySelector(".timer-name").textContent)
         f1rm = this.closest(".timer")
-        f1rm.previousElementSibling.hidden = true
-        f1rm.hidden = true
-        f1rm.nextElementSibling.hidden = false
         f1rm.className = "timer reset"
+        this.closest(".timer-container").remove()
 
     }
 
@@ -315,18 +320,18 @@ async function timeMe() { // Функция добавляет таймеру с
         }
     }
 
-    function die() {
+    function die(){
         this.closest(".timer-container").remove()
     }
 
     forms[0].querySelector(".timer-button").addEventListener("click", updateCountdown)
+
     forms[0].querySelectorAll(".timer-button")[1].addEventListener("click", die)
 
     forms[1].querySelector(".timer-button").addEventListener('click', pause)
     forms[1].querySelectorAll(".timer-button")[1].addEventListener('click', reset)
     forms[1].querySelectorAll(".timer-button")[2].addEventListener('click', end)
 
-    forms[2].querySelector(".timer-button").addEventListener('click', die)
 
 }
 
