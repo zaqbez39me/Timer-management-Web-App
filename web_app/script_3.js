@@ -241,9 +241,12 @@ async function timeMe() { // Функция добавляет таймеру с
         const id = timerElements[0].closest(".dig-time")
         id.style.background = "linear-gradient(62.99deg, #EEF1F0 7.18%, #71757E 83.56%)"
         id.style.webkitBackgroundClip= "text"
+        f0rm.nextElementSibling.querySelectorAll(".timer-button")[0].disabled = false
         f0rm.nextElementSibling.querySelectorAll(".timer-button")[1].disabled = false
         timerActive = setInterval(async () => {
             if (f0rm.nextElementSibling.className === "timer reset"){
+                id.style.background = "linear-gradient(62.99deg, #EEF1F0 7.18%, #71757E 83.56%)"
+	            id.style.webkitBackgroundClip = "text"
                 nowTime = 0
                 f0rm.nextElementSibling.className = "timer"
                 distance = inputValue - nowTime
@@ -273,7 +276,7 @@ async function timeMe() { // Функция добавляет таймеру с
                 if (distance < 0) {
                     f1rm = f0rm.nextElementSibling
                     f1rm.className = "timer settings"
-                    f0rm.nextElementSibling.querySelectorAll(".timer-button")[1].disabled = true
+                    f0rm.nextElementSibling.querySelectorAll(".timer-button")[0].disabled = true
                     // f0rm.nextElementSibling.querySelectorAll(".timer-button")[2].click()
                 } else {
                     const days = Math.floor(distance / day)
@@ -302,7 +305,7 @@ async function timeMe() { // Функция добавляет таймеру с
         inputTitle = f0rm.querySelector(".input_name").value
         let inputDate = f0rm.querySelectorAll(".input-date")[1].value
         if (inputDate === '00:00:00') {
-            alert(`Please select a date for the Timer\nTimer name : "${inputTitle}"`)
+            
         } else {
             let a = inputDate.split(':'); // split it at the colons
             let inputValue = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
@@ -352,7 +355,7 @@ async function timeMe() { // Функция добавляет таймеру с
             await stopTimer(f1rm.querySelector(".timer-name").textContent)
             f1rm.classList.remove("play")
             f1rm.querySelector("img").setAttribute("src", "./img/svg/play.svg")
-        } else {
+        } else if (f1rm.classList[1] !== "settings"){
             await resumeTimer(f1rm.querySelector(".timer-name").textContent)
             f1rm.classList.add("play")
             f1rm.querySelector("img").setAttribute("src", "./img/svg/pause.svg")
