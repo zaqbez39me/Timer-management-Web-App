@@ -213,11 +213,11 @@ async function timeMe() { // Функция добавляет таймеру с
         let now = new Date().getTime()
         let nowTime = 0
         console.log(Math.floor((inputValue) / sec), timerTitle)
-        await addTimer(timerTitle, Math.floor((inputValue) / sec))
-        await resumeTimer(timerTitle)
+        // await addTimer(timerTitle, Math.floor((inputValue) / sec))
+        // await resumeTimer(timerTitle)
         f0rm.hidden = true
         f0rm.nextElementSibling.hidden = false
-        const distance = inputValue - nowTime
+        let distance = inputValue - nowTime
         const days = Math.floor(distance / day)
         const hours = Math.floor((distance % day) / hour)
         const minutes = Math.floor((distance % hour) / minute)
@@ -232,7 +232,7 @@ async function timeMe() { // Функция добавляет таймеру с
         id.style.background = "linear-gradient(62.99deg, #EEF1F0 7.18%, #71757E 83.56%)"
         id.style.webkitBackgroundClip= "text"
         timerActive = setInterval(async () => {
-            if (f0rm.nextElementSibling.className === "timer reset") {
+            if (f0rm.nextElementSibling.className === "timer settings") {
 
                 f0rm.nextElementSibling.className = "timer play"
 
@@ -241,11 +241,11 @@ async function timeMe() { // Функция добавляет таймеру с
             } else if (f0rm.nextElementSibling.className === "timer play") {
                 f0rm.hidden = true
                 f0rm.nextElementSibling.hidden = false
-                const distance = inputValue - nowTime
+                let distance = inputValue - nowTime
                 nowTime += sec
                 if (distance < 0) {
                     f1rm = f0rm.nextElementSibling
-                    f1rm.className = "timer reset"
+                    f1rm.className = "timer settings"
 
                 } else {
                     const days = Math.floor(distance / day)
@@ -263,6 +263,21 @@ async function timeMe() { // Функция добавляет таймеру с
                         id.style.webkitBackgroundClip= "text"
                     }
                 }
+            } else if (f0rm.nextElementSibling.className === "timer reset"){
+                nowTime = 0
+                f0rm.nextElementSibling.className = "timer play"
+                distance = inputValue - nowTime
+                nowTime += sec
+                const days = Math.floor(distance / day)
+                const hours = Math.floor((distance % day) / hour)
+                const minutes = Math.floor((distance % hour) / minute)
+                const seconds = Math.floor((distance % minute) / sec)
+                // console.log(days, hours, minutes, seconds)
+
+                timerElements[0].textContent = `${days}`
+                timerElements[1].textContent = `${hours}`
+                timerElements[2].textContent = `${minutes}`
+                timerElements[3].textContent = `${seconds}`
             }
         }, sec)
     }
@@ -273,10 +288,10 @@ async function timeMe() { // Функция добавляет таймеру с
         let timerElements = f0rm.nextElementSibling.querySelectorAll("span")
         inputTitle = f0rm.querySelector(".input_name").value
         let inputDate = f0rm.querySelectorAll(".input-date")[1].value
-        if (inputDate === '') {
+        if (inputDate === '00:00:00') {
             alert(`Please select a date for the Timer\nTimer name : "${inputTitle}"`)
         } else {
-            let a = inputDate.split('00:00:00'); // split it at the colons
+            let a = inputDate.split(':'); // split it at the colons
             let inputValue = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
             timerTitle.textContent = `${inputTitle}`
             isPaused = false
@@ -285,7 +300,7 @@ async function timeMe() { // Функция добавляет таймеру с
 
     }
 
-    async function reset(e) {
+    async function settings(e) {
         f1rm = this.closest(".timer")
         f1rm.previousElementSibling.querySelector(".timer-button").disabled = true
         await removeTimer(f1rm.querySelector(".timer-name").textContent)
@@ -293,18 +308,23 @@ async function timeMe() { // Функция добавляет таймеру с
         f1rm.previousElementSibling.hidden = false
         f1rm.hidden = true
 
-        f1rm.className = "timer reset"
+        f1rm.className = "timer settings"
 
 
 
     }
 
     async function end(e) {
-        await removeTimer(f1rm.querySelector(".timer-name").textContent)
         f1rm = this.closest(".timer")
-        f1rm.className = "timer reset"
+        await removeTimer(f1rm.querySelector(".timer-name").textContent)
+        f1rm.className = "timer settings"
         this.closest(".timer-container").remove()
 
+    }
+    async function reset() {
+        f1rm = this.closest(".timer")
+        await resetTimer(f1rm.querySelector(".timer-name").textContent)
+        f1rm.className = "timer reset"
     }
 
     async function pause() {
@@ -325,12 +345,12 @@ async function timeMe() { // Функция добавляет таймеру с
     }
 
     forms[0].querySelector(".timer-button").addEventListener("click", updateCountdown)
-
     forms[0].querySelectorAll(".timer-button")[1].addEventListener("click", die)
 
     forms[1].querySelector(".timer-button").addEventListener('click', pause)
     forms[1].querySelectorAll(".timer-button")[1].addEventListener('click', reset)
-    forms[1].querySelectorAll(".timer-button")[2].addEventListener('click', end)
+    forms[1].querySelectorAll(".timer-button")[2].addEventListener('click', settings)
+    forms[1].querySelectorAll(".timer-button")[3].addEventListener('click', end)
 
 
 }
