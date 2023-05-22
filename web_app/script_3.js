@@ -6,7 +6,6 @@ day = hour * 24
 function refresh(timers){
     for (let i=0; i<timers.length; i++){
         obj = timers[i]
-        console.log(obj)
         document.querySelector(".header__add").click()
         containers = document.getElementsByClassName("timer-container")
         forms = containers[containers.length - 1].getElementsByClassName("timer")
@@ -20,10 +19,8 @@ function refresh(timers){
         forms[0].querySelectorAll(".input-date")[1].value= hours+':'+minutes+':'+seconds;
         forms[0].querySelector(".timer-button").click()
         if (!obj["active"] && obj["time_left"] !== 0){
-            console.log(forms[1].querySelector(".timer-button"))
             forms[1].querySelector(".timer-button").click()
         }
-        console.dir(timers)
 
     }
 }
@@ -221,7 +218,6 @@ async function timeMe() { // Функция добавляет таймеру с
     async function updateDom(f0rm, timerElements, inputValue, timerTitle) {
         let now = new Date().getTime()
         let nowTime = 0
-        console.log(Math.floor((inputValue) / sec), timerTitle)
         if(!(await addTimer(timerTitle, Math.floor((inputValue) / sec))))
             return;
         await resumeTimer(timerTitle)
