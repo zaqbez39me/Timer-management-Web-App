@@ -1,4 +1,4 @@
-// const BACK_IP = "0.0.0.0"
+// const BACK_IP = "localhost"
 // const BACK_PORT = 8080
 // const baseUrl = `http://${BACK_IP}:${BACK_PORT}`
 

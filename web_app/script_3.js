@@ -37,7 +37,7 @@ async function getServerTime() {
         headers: { "Accept": "application/json", "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
     })
     // if (!response.ok) {
-    //     window.location.assign('/1.html')
+    //     window.location.assign('/login')
     // }
     responseJson = await response.json()
     console.log(responseJson["server_time"])
@@ -52,7 +52,7 @@ async function fetchAllTimers() {
         headers: { "Accept": "application/json", "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
     })
     // if (!response.ok) {
-    //     window.location.assign('/1.html')
+    //     window.location.assign('/login')
     // }
     responseJson = await response.json()
     console.log(responseJson)
@@ -123,8 +123,17 @@ async function addTimer(timerName, durationInSeconds) {
         headers: { "Accept": "application/json", "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: body
     })
+    if (!response.ok){
+        if(response.status === 401) {
+            window.location.assign('/login')
+        } else if(response.status === 409){
+            alert(`Please select a unique timer name!"`)
+            return false;
+        }
+    }
+    return true;
     // if (!response.ok) {
-    //     window.location.assign('/1.html')
+    //
     // }
     // responseJson = response.json()
     // console.log(responseJson);
@@ -141,7 +150,7 @@ async function stopTimer(timerName) {
         })
     })
     // if (!response.ok) {
-    //     window.location.assign('/1.html')
+    //     window.location.assign('/login')
     // }
     // responseJson = response.json()
     // console.log(responseJson);
@@ -158,7 +167,7 @@ async function resumeTimer(timerName) {
         })
     })
     // if (!response.ok) {
-    //     window.location.assign('/1.html')
+    //     window.location.assign('/login')
     // }
     // responseJson = response.json()
     // console.log(responseJson);
@@ -175,7 +184,7 @@ async function resetTimer(timerName, durationInSeconds) {
         })
     })
     // if (!response.ok) {
-    //     window.location.assign('/1.html')
+    //     window.location.assign('/login')
     // }
     // responseJson = response.json()
     // console.log(responseJson);
@@ -192,7 +201,7 @@ async function removeTimer(timerName) {
         })
     })
     // if (!response.ok) {
-    //     window.location.assign('/1.html')
+    //     window.location.assign('/login')
     // }
     if (response.ok) {
         responseJson = await response.json()
@@ -213,7 +222,8 @@ async function timeMe() { // Функция добавляет таймеру с
         let now = new Date().getTime()
         let nowTime = 0
         console.log(Math.floor((inputValue) / sec), timerTitle)
-        await addTimer(timerTitle, Math.floor((inputValue) / sec))
+        if(!(await addTimer(timerTitle, Math.floor((inputValue) / sec))))
+            return;
         await resumeTimer(timerTitle)
         f0rm.hidden = true
         f0rm.nextElementSibling.hidden = false

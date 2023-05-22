@@ -1,4 +1,4 @@
-const BACK_IP = "0.0.0.0"
+const BACK_IP = "localhost"
 const BACK_PORT = 8080
 const baseUrl = `http://${BACK_IP}:${BACK_PORT}`
 
@@ -43,7 +43,7 @@ async function redirect_if_not_logged() {
     if (!(await login_check())) {
         // On fixing CORS uncomment the line after this line
 
-        window.location.assign('/1.html')
+        window.location.assign('/login')
     }
 }
 // Add this file as script for every html file that has to be checked for login

@@ -65,7 +65,7 @@ rBtn.onclick = async () => {
 }
 rBtn.onclick(undefined)
 
-const BACK_IP = "0.0.0.0"
+const BACK_IP = "localhost"
 const BACK_PORT = 8080
 const baseUrl = `http://${BACK_IP}:${BACK_PORT}`
 
@@ -86,7 +86,7 @@ async function register(username, password) {
         const answer = await response.json();
         console.log(answer);
         // Register doesn't provide access token
-        window.location.assign('/1.html')
+        window.location.assign('/login')
         return true
     } else{
         // TODO: error handling
@@ -129,7 +129,7 @@ async function login(username, password) {
         console.log(sessionStorage.getItem('access_token'))
         console.log(sessionStorage.getItem('refresh_token'))
         console.log(sessionStorage.getItem('token_type'))
-        window.location.assign('/3.html')
+        window.location.assign('/')
         return true
     } else{
         // TODO: error handling
